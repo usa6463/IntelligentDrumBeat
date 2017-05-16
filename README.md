@@ -1,1 +1,1 @@
-# IntelligentIDS
+# IntelligentNIDS
