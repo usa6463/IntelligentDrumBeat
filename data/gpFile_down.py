@@ -33,6 +33,7 @@ for alpha_list in alpha:
 	if(html_page.status != 200):
 			continue;
 	'''
+	##
 	page_txt = html_page.data;
 	bs = BeautifulSoup(page_txt,'html.parser');
 	try:
