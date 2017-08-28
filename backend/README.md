@@ -1,8 +1,10 @@
 # IntelligentDrumBeat
 System which make drum beat using tensorflow
 
-## android
-Android application files
+## deploy (Linux)
+- `virtualenv env`
+- `source env/bin/activate`
+- `pip install -r requirements.txt`
 
 ## data
 collecting data scripts
