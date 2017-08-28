@@ -33,7 +33,10 @@ def extract_drum(midi_dir, f):
             for drum in drums:
                 for note in drum.notes:
                     if (note.start > part[time_i]) and (note.start < part[time_i+1]):
-                        new_note = pretty_midi.Note(velocity=100, pitch=note.pitch, start=part[time_i], end=part[time_i]+.3)
+                        new_note = pretty_midi.Note(velocity=100,
+                            pitch=note.pitch,
+                            start=part[time_i],
+                            end=part[time_i]+.3)
                         generated_drum.notes.append(new_note)
 
     extracted_drum.instruments.append(generated_drum)
@@ -82,7 +85,10 @@ def drum_midi_to_text(midi_dir, f):
             note_list = set(note_list)
             for pitch in note_list:
                 if pitch in allowed_pitch:
-                    new_note = pretty_midi.Note(velocity=100, pitch=pitch, start=part[time_i], end=part[time_i]+.3)
+                    new_note = pretty_midi.Note(velocity=100,
+                        pitch=pitch,
+                        start=part[time_i],
+                        end=part[time_i]+.3)
                     generated_drum.notes.append(new_note)
                     idx = allowed_pitch.index(pitch)
                     lst = list(text)
@@ -94,27 +100,25 @@ def drum_midi_to_text(midi_dir, f):
     extracted_drum.write('drum/' + f[:-4] + '.mid')
     fd.close()
 
-# text -> midi /// text 폴더안의 .txt 파일을 읽어서 midi파일 형태로 나타낸다. 
-def text_to_midi(f):
-    pass
 
-# main
 if __name__ == '__main__':
+    if os.path.exists('./drum/') == False:
+        os.makedirs('./drum/')
+    if os.path.exists('./melody/') == False:
+        os.makedirs('./melody/')
+    if os.path.exists('./midi/') == False:
+        os.makedirs('./midi/')
+        print 'please input .mid files to ./midi directory!'
+        exit()
 
     midi_dir = 'midi'
-    text_dir = 'text'
     midi_filenames = os.listdir(midi_dir)
-    # text_filenames = os.listdir(text_dir)
 
     midi_filenames = [f for f in midi_filenames if f.endswith('.mid')]
     midi_filenames = [f for f in midi_filenames if os.path.getsize(midi_dir + '/' + f) != 0]
-    # text_filenames = [f for f in text_filenames if f.endswith('.txt')]
-    # text_filenames = [f for f in text_filenames if os.path.getsize(text_dir + '/' + f) != 0]
 
     for f in midi_filenames:
         extract_drum(midi_dir, f)
         drum_midi_to_text(midi_dir, f)
-    # for f in text_filenames:
-    #     text_to_midi(text_dir + '/' + f)
 
     print 'done! for %d files' % len(midi_filenames)
