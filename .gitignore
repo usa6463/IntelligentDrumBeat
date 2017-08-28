@@ -1,3 +1,6 @@
 # Distribution / packaging
 env/
-.gp*
+*.txt
+*.mid
+*.pyc
+!requirements.txt
