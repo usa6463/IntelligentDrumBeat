@@ -16,6 +16,7 @@
     "electron-prebuilt": "^1.4.13"
   },
   "dependencies": {
-    "electron-simple-templates": "^1.1.0"
+    "electron-simple-templates": "^1.1.0",
+    "vim": "^0.1.0"
   }
 }

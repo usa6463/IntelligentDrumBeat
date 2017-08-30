@@ -1680,10 +1680,10 @@
 		text-decoration: none;
 	}
 
-		a:hover {
+		/*a:hover {
 			border-bottom-color: transparent;
 			color: #ffffff;
-		}
+		}*/
 
 	strong, b {
 		color: #ffffff;
@@ -3262,7 +3262,7 @@
 		}
 
 		.wrapper.style2 {
-			background-color: #5052b5;
+			background-color: #3f4f61;
 		}
 
 		.wrapper.style2-alt {
@@ -3750,7 +3750,7 @@
 			border: 0;
 			color: rgba(255, 255, 255, 255);/*255, 255, 255, 0.35*/
 			display: block;
-			font-size: 0.6em;
+			/*font-size: 0.6em;*/
 			font-weight: bold;
 			letter-spacing: 0.25em;
 			line-height: 1.75;
@@ -3958,7 +3958,8 @@ body.SilverWings {
 }
 
 a {text-decoration: none; color: #000; cursor: pointer;}
-a:hover {color: #FFC0CB;}
+
+/*a:hover {color: #FFC0CB;}*/
 
 nav.left {
 	position: fixed;
@@ -3972,11 +3973,11 @@ nav.right {
 }
 
 #piano {
-    background-color: #272927;
+    /*background-color: #272927;*/
     color: #000000;
-    left: 50%;
+    left: 55%;
     margin-left: -50%;
-    margin-top: /*-200px*/0px;
+    margin-top: /*-200px*/130px;
     position: absolute;
     text-align: center;
     top: /*350px*/0px;
@@ -3986,10 +3987,10 @@ nav.right {
 }
 
 #pianoBody {
-	width: 100%;
+	width: 970px;
 	position: relative;
 	float: left;
-	height: 800px
+	height: 466px
 }
 
 /*
@@ -4155,12 +4156,12 @@ div.black div.kbkeyname {
 }
 
 .oN {
-    bottom: 75px;
-    font-size: 3em;
-    left: 32px;
+    bottom: 0px;
+    font-size: 2em;
+    left: 10px;
     margin: 0 0 0 0;
     position: absolute;
-    display: none;
+    /*display: none;*/
 }
 
 /*
