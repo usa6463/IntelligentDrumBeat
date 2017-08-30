@@ -110,10 +110,8 @@ def extract_melody(midi_dir, f):
 
     melody_inst = None
     for inst in midi_data.instruments:
-        max_note_count = 0
-        if not inst.is_drum and (len(inst.notes) > max_note_count) and (inst.program >= 1 and inst.program <= 32):
+        if not inst.is_drum :
             melody_inst = inst
-            max_note_count = len(inst.notes)
 
     print (f, melody_inst.name, melody_inst.program)
     beats = midi_data.get_downbeats()
@@ -129,13 +127,18 @@ def extract_melody(midi_dir, f):
         part.append(end)
         
         for time_i in range(len(part)-1):
+            min_pitch = 200
+            check = False
             for note in melody_inst.notes:
-                if (note.start > part[time_i]) and (note.start < part[time_i+1]):
-                    new_note = pretty_midi.Note(velocity=100,
-                        pitch=note.pitch,
-                        start=part[time_i],
-                        end=part[time_i]+.3)
-                    generated_melody.notes.append(new_note)
+                if (note.start > part[time_i]) and (note.start < part[time_i+1]) and (note.pitch<min_pitch):
+                    check = True
+                    min_pitch = note.pitch
+            if check:
+                new_note = pretty_midi.Note(velocity=100,
+                    pitch=min_pitch,
+                    start=part[time_i],
+                    end=part[time_i]+.3)
+                generated_melody.notes.append(new_note)
 
     extracted_melody.instruments.append(generated_melody)
     extracted_melody.write('melody/' + f[:-4] + '.mid')
