@@ -3,10 +3,10 @@ import os
 import pretty_midi
 from config import *
 
-seperate_power = 32
+separate_power = 32
 
 def extract_drum(midi_dir, f):
-    global seperate_power
+    global separate_power
     midi_data = pretty_midi.PrettyMIDI(midi_dir + '/' + f)
     extracted_drum = pretty_midi.PrettyMIDI()
     generated_drum = pretty_midi.Instrument(program=0)
@@ -21,10 +21,10 @@ def extract_drum(midi_dir, f):
     for i in range(len(beats)-1):
         start = beats[i]
         end = beats[i+1]
-        interval = float((end-start)) / seperate_power
+        interval = float((end-start)) / separate_power
         
         part = []
-        for j in range(seperate_power):
+        for j in range(separate_power):
             part.append(start)
             start += interval
         part.append(end)
@@ -44,7 +44,7 @@ def extract_drum(midi_dir, f):
 
 
 def drum_midi_to_text(midi_dir, f):
-    global seperate_power
+    global separate_power
 
     midi_data = pretty_midi.PrettyMIDI(midi_dir + '/' + f)
 
@@ -62,10 +62,10 @@ def drum_midi_to_text(midi_dir, f):
     for i in range(len(beats)-1):
         start = beats[i]
         end = beats[i+1]
-        interval = float((end-start)) / seperate_power
+        interval = float((end-start)) / separate_power
         
         part = []
-        for j in range(seperate_power):
+        for j in range(separate_power):
             part.append(start)
             start += interval
         part.append(end)
@@ -101,6 +101,46 @@ def drum_midi_to_text(midi_dir, f):
     fd.close()
 
 
+def extract_melody(midi_dir, f):
+    global separate_power
+    midi_data = pretty_midi.PrettyMIDI(midi_dir + '/' + f)
+    extracted_melody = pretty_midi.PrettyMIDI()
+    generated_melody = pretty_midi.Instrument(program=1) # Acoustic Grand Piano
+    generated_melody.is_drum = False
+
+    melody_inst = None
+    for inst in midi_data.instruments:
+        max_note_count = 0
+        if not inst.is_drum and (len(inst.notes) > max_note_count) and (inst.program >= 1 and inst.program <= 32):
+            melody_inst = inst
+            max_note_count = len(inst.notes)
+
+    print (f, melody_inst.name, melody_inst.program)
+    beats = midi_data.get_downbeats()
+    for i in range(len(beats)-1):
+        start = beats[i]
+        end = beats[i+1]
+        interval = float((end-start)) / separate_power
+        
+        part = []
+        for j in range(separate_power):
+            part.append(start)
+            start += interval
+        part.append(end)
+        
+        for time_i in range(len(part)-1):
+            for note in melody_inst.notes:
+                if (note.start > part[time_i]) and (note.start < part[time_i+1]):
+                    new_note = pretty_midi.Note(velocity=100,
+                        pitch=note.pitch,
+                        start=part[time_i],
+                        end=part[time_i]+.3)
+                    generated_melody.notes.append(new_note)
+
+    extracted_melody.instruments.append(generated_melody)
+    extracted_melody.write('melody/' + f[:-4] + '.mid')
+
+
 if __name__ == '__main__':
     if os.path.exists('./drum/') == False:
         os.makedirs('./drum/')
@@ -118,7 +158,8 @@ if __name__ == '__main__':
     midi_filenames = [f for f in midi_filenames if os.path.getsize(midi_dir + '/' + f) != 0]
 
     for f in midi_filenames:
-        extract_drum(midi_dir, f)
-        drum_midi_to_text(midi_dir, f)
+        # extract_drum(midi_dir, f)
+        # drum_midi_to_text(midi_dir, f)
+        extract_melody(midi_dir, f)
 
     print 'done! for %d files' % len(midi_filenames)
