@@ -1,3 +1,0 @@
-hi
-
-please remove this when you update frontend folder
