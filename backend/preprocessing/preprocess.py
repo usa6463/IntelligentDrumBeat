@@ -109,7 +109,7 @@ def extract_drum(midi_dir, f):
         for time_i in range(len(part)-1):
             for drum in drums:
                 for note in drum.notes:
-                    if (note.start > part[time_i]) and (note.start < part[time_i+1]):
+                    if (note.start >= part[time_i]) and (note.start <= part[time_i+1]):
                         new_note = pretty_midi.Note(velocity=100,
                             pitch=note.pitch,
                             start=part[time_i],
@@ -152,7 +152,7 @@ def drum_midi_to_text(midi_dir, f, fd):
             note_list = []
             for drum in drums:
                 for note in drum.notes:
-                    if (note.start > part[time_i]) and (note.start < part[time_i+1]):
+                    if (note.start >= part[time_i]) and (note.start <= part[time_i+1]):
                         note_list.append(note.pitch)
 
             for pitch in note_list:
@@ -207,7 +207,7 @@ def extract_melody(midi_dir, f):
             min_pitch = 200
             check = False
             for note in melody_inst.notes:
-                if (note.start > part[time_i]) and (note.start < part[time_i+1]) and (note.pitch<min_pitch):
+                if (note.start >= part[time_i]) and (note.start <= part[time_i+1]) and (note.pitch < min_pitch):
                     check = True
                     min_pitch = note.pitch
             if check:
@@ -252,7 +252,7 @@ def melody_midi_to_text(midi_dir, f, fd):
             min_pitch = 200
             check = False
             for note in melody_inst.notes:
-                if (note.start > part[time_i]) and (note.start < part[time_i+1]) and (note.pitch<min_pitch):
+                if (note.start >= part[time_i]) and (note.start <= part[time_i+1]) and (note.pitch<min_pitch):
                     check = True
                     min_pitch = note.pitch
             if check:
