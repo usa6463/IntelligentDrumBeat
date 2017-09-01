@@ -1,4 +1,4 @@
-from keras.models import Sequential
+from keras.models import Sequential, model_from_json
 from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.recurrent import LSTM
 from keras.utils.data_utils import get_file
@@ -10,6 +10,10 @@ import os
 
 time_num = 5000
 case_num = 512
+batch_size = 10
+nb_epoch = 1
+loss = 'categorical_crossentropy'
+optimizer = 'adam'
 
 def train_text_to_arr(time_num, case_num):
     melody_fd = open('../preprocessing/melody_train.txt')
@@ -74,7 +78,7 @@ def pred_to_drum_track():
     pass
 
 def get_model(song_num, time_num, case_num, x_train, y_train):
-
+    # function making new model
     model = Sequential()
     model.add(LSTM(song_num, return_sequences=True, input_shape=(time_num, case_num)))
     model.add(Dropout(0.2))
@@ -83,16 +87,61 @@ def get_model(song_num, time_num, case_num, x_train, y_train):
 
     model.add(Dense(case_num))
     model.add(Activation('softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='adam')
+    model.compile(loss=loss, optimizer=optimizer)
+
+    result = model.fit(x_train, y_train, batch_size=batch_size, nb_epoch=nb_epoch)
+
+    model_json = model.to_json()
+    with open('model.json', 'w') as json_file:
+        json_file.write(model_json)
+    # serialize weights to HDF5
+    model.save_weights('model.h5')
+    print('model saved')
+
+def update_model(x_train, y_train):
+    if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
+        print('pleas make model first')
+        exit()
+
+    json_file = open('model.json', 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    model = model_from_json(loaded_model_json)
+    # load weights into new model
+    model.load_weights('model.h5')
+    model.compile(loss=loss, optimizer=optimizer)
+    print('model loaded')
+
+    result = model.fit(x_train, y_train, batch_size=batch_size, nb_epoch=nb_epoch)
+    model_json = model.to_json()
+    with open('model.json', 'w') as json_file:
+        json_file.write(model_json)
+    # serialize weights to HDF5
+    model.save_weights('model.h5')
+    print('model updated')
+
+
+def predict():
+    if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
+        print('pleas make model first')
+        exit()
+
+    json_file = open('model.json', 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    model = model_from_json(loaded_model_json)
+    # load weights into new model
+    model.load_weights('model.h5')
+    model.compile(loss=loss, optimizer=optimizer)
+    print('model loaded')
 
     x_test = np.zeros((1, time_num, case_num), dtype=np.bool)
-
-    result = model.fit(x_train, y_train, batch_size=10, nb_epoch=10)
-
     preds = model.predict(x_test, verbose=0)
     print(preds)
     print(preds.shape)
 
 if __name__=='__main__':
     x_train, y_train, song_num = train_text_to_arr(time_num, case_num)
-    get_model(song_num, time_num, case_num, x_train, y_train)
+    # get_model(song_num, time_num, case_num, x_train, y_train)
+    update_model(x_train, y_train)
+    predict()
