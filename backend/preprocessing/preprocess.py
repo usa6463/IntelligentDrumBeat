@@ -2,6 +2,7 @@
 import os
 import pretty_midi
 from config import *
+from tqdm import tqdm
 
 separate_power = 32
 
@@ -235,7 +236,6 @@ def melody_midi_to_text(midi_dir, f, fd):
         if not inst.is_drum :
             melody_inst = inst
 
-    print (f, melody_inst.name, melody_inst.program)
     beats = midi_data.get_downbeats()
     for i in range(len(beats)-1):
         start = beats[i]
@@ -286,14 +286,18 @@ if __name__ == '__main__':
     midi_filenames = [f for f in midi_filenames if f.endswith('.mid')]
     midi_filenames = [f for f in midi_filenames if os.path.getsize(midi_dir + '/' + f) != 0]
 
-    drum_fd = open('drum_train.txt', 'a')
-    melody_fd = open('melody_train.txt', 'a')
+    drum_fd = open('drum_train.txt', 'w')
+    melody_fd = open('melody_train.txt', 'w')
 
-    for f in midi_filenames:
+    for f in tqdm(midi_filenames):
         midi_data = pretty_midi.PrettyMIDI(midi_dir + '/' + f)
         inst = midi_data.instruments
+        if len(inst) != 2:
+            continue
         if (len(inst[0].notes) < 100) or (len(inst[1].notes) < 100):
             continue
+
+        print f
 
         drum_midi_to_text(midi_dir, f, drum_fd)
         melody_midi_to_text(midi_dir, f, melody_fd)
