@@ -79,6 +79,7 @@ def concat_arr_to_midi(midi_data_name, arr):
                     one_index -= 2**k
 
     midi_data.instruments.append(generated_drum)
+    midi_data.write('test_drum_added.mid')
 
 
 if __name__ == '__main__':
