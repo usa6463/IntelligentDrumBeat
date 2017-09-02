@@ -1,6 +1,7 @@
 import urllib2
 import re
 import os
+from tqdm import tqdm
 
 mid_regex = r'a href=".*[.]mid"'
 
@@ -20,7 +21,7 @@ for url in web_root:
     if not os.path.exists(folder):
         os.makedirs(folder)
     
-    for midi in midi_file_list:
+    for midi in tqdm(midi_file_list):
         midi_file = urllib2.urlopen(url+midi)
         with open(folder + midi, 'wb') as fd:
             fd.write(midi_file.read())
