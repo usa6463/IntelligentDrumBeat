@@ -117,32 +117,38 @@ def auto_extract():
     file_list = [f for f in file_list if f.endswith('.mid')]
 
     for f in tqdm(file_list):
-        midi_data = pretty_midi.PrettyMIDI(f)
-        extracted_melody = pretty_midi.PrettyMIDI()
+        try:
+            midi_data = pretty_midi.PrettyMIDI(f)
+            extracted_melody = pretty_midi.PrettyMIDI()
 
-        generated_melody = pretty_midi.Instrument(program=1) # Acoustic Grand Piano
-        generated_melody.is_drum = False
-        generated_melody.name = 'Melody'
+            generated_melody = pretty_midi.Instrument(program=1) # Acoustic Grand Piano
+            generated_melody.is_drum = False
+            generated_melody.name = 'Melody'
 
-        generated_durm = pretty_midi.Instrument(program=0) 
-        generated_durm.is_drum = True
-        generated_durm.name = 'Drum'
+            generated_durm = pretty_midi.Instrument(program=0) 
+            generated_durm.is_drum = True
+            generated_durm.name = 'Drum'
 
-        for inst in midi_data.instruments:
-            if inst.is_drum:
-                notes = inst.notes
-                for note in notes:
-                    generated_durm.notes.append(note)
+            for inst in midi_data.instruments:
+                if inst.is_drum:
+                    notes = inst.notes
+                    for note in notes:
+                        generated_durm.notes.append(note)
 
-        melody_inst_index = findMelody(midi_data)
-        melody_inst = midi_data.instruments[melody_inst_index]
-        notes = melody_inst.notes
-        for note in notes:
-            generated_melody.notes.append(note)
-            
-        extracted_melody.instruments.append(generated_melody)
-        extracted_melody.instruments.append(generated_durm)
-        extracted_melody.write(f + '_extract' + '.mid')
+            melody_inst_index = findMelody(midi_data)
+            melody_inst = midi_data.instruments[melody_inst_index]
+            notes = melody_inst.notes
+            for note in notes:
+                generated_melody.notes.append(note)
+                
+            extracted_melody.instruments.append(generated_melody)
+            extracted_melody.instruments.append(generated_durm)
+            extracted_melody.write('../midi/' + f + '_extract' + '.mid')
+        except Exception as e:
+            print(e)
+            print f + 'has error!'
+            if os.path.exists('../midi/' + f + '_extract' + '.mid'):
+                os.remove('../midi/' + f + '_extract' + '.mid')
 
 
 if __name__ == '__main__':
@@ -176,4 +182,4 @@ if __name__ == '__main__':
     # else:
     #     print usage
     auto_extract()
-    move()
+    # move()
