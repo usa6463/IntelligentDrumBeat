@@ -135,9 +135,10 @@ def predict(arr):
     model.compile(loss=loss, optimizer=optimizer)
     print('model loaded')
 
-    x_test = np.zeros((1, time_num, case_num), dtype=np.bool)
+    print('predicting...')
     preds = model.predict(arr, verbose=0)
     
+
     return preds
 
 if __name__=='__main__':
