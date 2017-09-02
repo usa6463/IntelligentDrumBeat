@@ -121,7 +121,7 @@ def update_model(x_train, y_train):
     print('model updated')
 
 
-def predict():
+def predict(arr):
     if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
         print('pleas make model first')
         exit()
@@ -136,12 +136,14 @@ def predict():
     print('model loaded')
 
     x_test = np.zeros((1, time_num, case_num), dtype=np.bool)
-    preds = model.predict(x_test, verbose=0)
-    print(preds)
-    print(preds.shape)
+    preds = model.predict(arr, verbose=0)
+    
+    return preds
 
 if __name__=='__main__':
     x_train, y_train, song_num = train_text_to_arr(time_num, case_num)
-    # get_model(song_num, time_num, case_num, x_train, y_train)
-    update_model(x_train, y_train)
-    predict()
+
+    if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
+        get_model(song_num, time_num, case_num, x_train, y_train)
+    else:
+        update_model(x_train, y_train)
