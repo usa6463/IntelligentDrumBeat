@@ -9,9 +9,9 @@ import sys
 import os
 from tqdm import tqdm
 
-time_num = 5000
+time_num = 10
 case_num = 512
-batch_size = 10
+batch_size = 1
 nb_epoch = 1
 loss = 'categorical_crossentropy'
 optimizer = 'adam'
@@ -27,7 +27,7 @@ def train_text_to_arr(time_num, case_num, song_start, song_end):
         y_train = np.zeros((1, time_num, case_num), dtype=np.bool)
         
         word_index = song_start[i]
-        for j in range(5000):
+        for j in range(time_num):
             word_index += 1
             if word_index < song_end[i]:
                 # melody part
@@ -153,9 +153,13 @@ if __name__=='__main__':
     song_num = len(song_start)
     print('train song num : {}'.format(song_num))
 
-    for i in range(0, song_num, 100):
-        x_train, y_train = train_text_to_arr(time_num, case_num, song_start[i:i+100], song_end[i:i+100])
+    for i in range(0, song_num, 1):
+        x_train, y_train = train_text_to_arr(time_num, case_num, song_start[i:i+1], song_end[i:i+1])
+        print(x_train.shape)
+        print('get x_train, y_train')
         if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
+            print('start get_model')
             get_model(song_num, time_num, case_num, x_train, y_train)
         else:
+            print('start update_model')
             update_model(x_train, y_train)
