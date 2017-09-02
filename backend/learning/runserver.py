@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     midi_data_name = 'test.mid'
     arr = melody_midi_to_arr(midi_data_name)
-    # pred = model.predict(arr)
+    pred = model.predict(arr)
     # concat_arr_to_midi(midi_data_name, pred)
 
     # send 'test.mid' to client

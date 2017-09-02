@@ -137,7 +137,15 @@ def predict(arr):
 
     print('predicting...')
     preds = model.predict(arr, verbose=0)
-    
+
+    for i in range(0, time_num):
+        time = preds[0][i]
+        max_index = np.argmax(time)
+        for j in range(0, case_num):
+            if j == max_index:
+                preds[0][i][j] = 1    
+            else:
+                preds[0][i][j] = 0
 
     return preds
 
