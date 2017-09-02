@@ -290,6 +290,11 @@ if __name__ == '__main__':
     melody_fd = open('melody_train.txt', 'a')
 
     for f in midi_filenames:
+        midi_data = pretty_midi.PrettyMIDI(midi_dir + '/' + f)
+        inst = midi_data.instruments
+        if (len(inst[0].notes) < 100) or (len(inst[1].notes) < 100):
+            continue
+
         drum_midi_to_text(midi_dir, f, drum_fd)
         melody_midi_to_text(midi_dir, f, melody_fd)
 
