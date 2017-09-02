@@ -22,10 +22,11 @@ for url in web_root:
         os.makedirs(folder)
     
     for midi in tqdm(midi_file_list):
-        midi_file = urllib2.urlopen(url+midi)
-        with open(folder + midi, 'wb') as fd:
-            fd.write(midi_file.read())
-
-# mp3file = urllib2.urlopen('http://bhs.minor9.com/midi/assortment/A-F/Billy%20Joel%20-%20PianoMan%202.mid')
-# with open('b.mid','wb') as output:
-#   output.write(mp3file.read())
+        try:
+            midi_file = urllib2.urlopen(url+midi)
+            with open(folder + midi, 'wb') as fd:
+                fd.write(midi_file.read())
+        except Exception as e:
+            if os.path.exists(folder + midi):
+                os.remove(folder + midi)
+            print e
