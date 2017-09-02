@@ -7,6 +7,7 @@ import numpy as np
 import random
 import sys
 import os
+from tqdm import tqdm
 
 time_num = 5000
 case_num = 512
@@ -39,10 +40,11 @@ def train_text_to_arr(time_num, case_num):
             song_end.append(i)
     song_num = len(song_start)
     print('train song num : {}'.format(song_num))
+    print('process text to ndarray')
 
     x_train_data = None
     y_train_data = None
-    for i in range(song_num):
+    for i in tqdm(range(song_num)):
         length = song_end[i] - song_start[i] - 1
         x_train = np.zeros((1, time_num, case_num), dtype=np.bool)    
         y_train = np.zeros((1, time_num, case_num), dtype=np.bool)
