@@ -26,6 +26,9 @@ def train_text_to_arr(song_start, song_end, melody, drum):
         length = song_end[i] - song_start[i] - 1
         x_train = np.zeros((1, time_num, case_num), dtype=np.bool)    
         y_train = np.zeros((1, time_num, case_num), dtype=np.bool)
+
+        melody_dic = {0:0, 1:0}
+        drum_dic = {0:0}
         
         word_index = song_start[i]
         for j in range(time_num):
@@ -33,7 +36,12 @@ def train_text_to_arr(song_start, song_end, melody, drum):
             if word_index < song_end[i]:
                 # melody part
                 case_num_index = int(melody[word_index])
-                x_train[0][j][case_num_index] = 1
+                if case_num_index != 0:
+                    x_train[0][j][1] = 1
+                    melody_dic[1] += 1 
+                else:
+                    x_train[0][j][0] = 1
+                    melody_dic[0] += 1 
                 
                 # drum part
                 case_num_index = 0
@@ -41,9 +49,25 @@ def train_text_to_arr(song_start, song_end, melody, drum):
                     if char == '1':
                         case_num_index += 2 ** (8-char_index)
                 y_train[0][j][case_num_index] = 1
+                if case_num_index in drum_dic:
+                    drum_dic[case_num_index] += 1
+                else:
+                    drum_dic[case_num_index] = 1
             else:
                 x_train[0][j][0] = 1
                 y_train[0][j][0] = 1
+                melody_dic[0] += 1 
+                drum_dic[0] += 1
+
+        print('train data arr result')
+        melody_count = 0
+        drum_count = 0
+        for key in melody_dic:
+            melody_count += melody_dic[key]
+        for key in drum_dic:
+            drum_count += drum_dic[key]
+        print(melody_dic, melody_count)
+        print(drum_dic, drum_count)
         
         if type(x_train_data) != type(x_train):
             x_train_data = x_train
@@ -132,6 +156,7 @@ def predict(arr):
                 preds[0][i][j] = 1    
             else:
                 preds[0][i][j] = 0
+    print('predicted result')
     print(dic)
     return preds
 

@@ -8,6 +8,8 @@ def melody_midi_to_arr(file_name):
     midi_data = pretty_midi.PrettyMIDI(file_name)
     arr = np.zeros((1, model.time_num, model.case_num), dtype=np.bool)
 
+    extracted_melody_dic = [0, 0]
+
     # melody select
     melody_inst = None
     for inst in midi_data.instruments:
@@ -34,7 +36,7 @@ def melody_midi_to_arr(file_name):
             check = False
 
             if total_time_i >= model.time_num:
-                return arr
+                return arr, extracted_melody_dic
 
             for note in melody_inst.notes:
                 if (note.start >= part[time_i]) and (note.start <= part[time_i+1]) and (note.pitch<min_pitch):
@@ -42,9 +44,13 @@ def melody_midi_to_arr(file_name):
                     min_pitch = note.pitch
                     
             if check:
-                arr[0][i*separate_power+time_i][min_pitch] = 1
+                arr[0][i*separate_power+time_i][1] = 1
+                extracted_melody_dic[1] += 1
+            else:
+                arr[0][i*separate_power+time_i][0] = 1
+                extracted_melody_dic[0] += 1
 
-    return arr
+    return arr, extracted_melody_dic
 
 
 def concat_arr_to_midi(midi_data_name, arr):
@@ -87,7 +93,11 @@ if __name__ == '__main__':
     # save MIDI file with name as 'test.mid'
 
     midi_data_name = 'test.mid'
-    arr = melody_midi_to_arr(midi_data_name)
+    
+    arr, extracted_melody_dic = melody_midi_to_arr(midi_data_name)
+    print('extracted_melody_dic result')
+    print(extracted_melody_dic)
+
     pred = model.predict(arr)
     
     concat_arr_to_midi(midi_data_name, pred)
