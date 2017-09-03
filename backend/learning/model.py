@@ -10,72 +10,78 @@ import os
 from tqdm import tqdm
 import re
 
-time_num = 2000
+time_num = 32
 case_num = 512
 batch_size = 10
-nb_epoch = 20
+nb_epoch = 1
 loss = 'categorical_crossentropy'
 optimizer = 'adam'
+step = 16
 
 def train_text_to_arr(song_start, song_end, melody, drum):
     print('process text to ndarray')
 
     x_train_data = None
     y_train_data = None
-    # range(len(song_start))
+    
     for i in tqdm(range(len(song_start))):
         length = song_end[i] - song_start[i] - 1
-        x_train = np.zeros((1, time_num, case_num), dtype=np.bool)    
-        y_train = np.zeros((1, time_num, case_num), dtype=np.bool)
 
-        melody_dic = {0:0, 1:0}
-        drum_dic = {0:0}
-        
-        word_index = song_start[i]
-        for j in range(time_num):
-            word_index += 1
-            if word_index < song_end[i]:
-                # melody part
-                case_num_index = int(melody[word_index])
-                if case_num_index != 0:
-                    x_train[0][j][1] = 1
-                    melody_dic[1] += 1 
+        for separ in range(0, length, step):
+            x_train = np.zeros((1, time_num, case_num), dtype=np.bool)    
+            y_train = np.zeros((1, time_num, case_num), dtype=np.bool)
+
+            melody_dic = {0:0, 1:0}
+            drum_dic = {0:0}
+            
+            word_index = song_start[i] + separ
+            if (word_index+1+time_num) > song_end[i]:
+                break
+
+            for j in range(time_num):
+                word_index += 1
+                if word_index < song_end[i]:
+                    # melody part
+                    case_num_index = int(melody[word_index])
+                    if case_num_index != 0:
+                        x_train[0][j][1] = 1
+                        melody_dic[1] += 1 
+                    else:
+                        x_train[0][j][0] = 1
+                        melody_dic[0] += 1 
+                    
+                    # drum part
+                    case_num_index = 0
+                    for char_index, char in enumerate(drum[word_index]):
+                        if char == '1':
+                            case_num_index += 2 ** (8-char_index)
+                    y_train[0][j][case_num_index] = 1
+                    if case_num_index in drum_dic:
+                        drum_dic[case_num_index] += 1
+                    else:
+                        drum_dic[case_num_index] = 1
                 else:
                     x_train[0][j][0] = 1
+                    y_train[0][j][0] = 1
                     melody_dic[0] += 1 
-                
-                # drum part
-                case_num_index = 0
-                for char_index, char in enumerate(drum[word_index]):
-                    if char == '1':
-                        case_num_index += 2 ** (8-char_index)
-                y_train[0][j][case_num_index] = 1
-                if case_num_index in drum_dic:
-                    drum_dic[case_num_index] += 1
-                else:
-                    drum_dic[case_num_index] = 1
-            else:
-                x_train[0][j][0] = 1
-                y_train[0][j][0] = 1
-                melody_dic[0] += 1 
-                drum_dic[0] += 1
+                    drum_dic[0] += 1
 
-        print('train data arr result')
-        melody_count = 0
-        drum_count = 0
-        for key in melody_dic:
-            melody_count += melody_dic[key]
-        for key in drum_dic:
-            drum_count += drum_dic[key]
-        print(melody_dic, melody_count)
-        print(drum_dic, drum_count)
-        
-        if type(x_train_data) != type(x_train):
-            x_train_data = x_train
-            y_train_data = y_train
-        else:
-            x_train_data = np.append(x_train_data, x_train, axis=0)
-            y_train_data = np.append(y_train_data, y_train, axis=0)
+            # print('train data arr result')
+            # melody_count = 0
+            # drum_count = 0
+            # for key in melody_dic:
+            #     melody_count += melody_dic[key]
+            # for key in drum_dic:
+            #     drum_count += drum_dic[key]
+            # print(melody_dic, melody_count)
+            # print(drum_dic, drum_count)
+            
+            if type(x_train_data) != type(x_train):
+                x_train_data = x_train
+                y_train_data = y_train
+            else:
+                x_train_data = np.append(x_train_data, x_train, axis=0)
+                y_train_data = np.append(y_train_data, y_train, axis=0)
 
     return x_train_data, y_train_data
 
