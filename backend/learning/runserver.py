@@ -16,6 +16,7 @@ def melody_midi_to_arr(file_name):
         if not inst.is_drum :
             melody_inst = inst
 
+    last_index = 0
     beats = midi_data.get_downbeats()
     for i in range(len(beats)-1):
         start = beats[i]
@@ -49,6 +50,11 @@ def melody_midi_to_arr(file_name):
             else:
                 arr[0][i*separate_power+time_i][0] = 1
                 extracted_melody_dic[0] += 1
+            last_index = i*separate_power+time_i
+
+    for i in range(last_index+1, model.time_num):
+        arr[0][i][0] = 1
+        extracted_melody_dic[0] += 1
 
     return arr, extracted_melody_dic
 
@@ -93,14 +99,16 @@ if __name__ == '__main__':
     # save MIDI file with name as 'test.mid'
 
     midi_data_name = 'test.mid'
-    
+
     arr, extracted_melody_dic = melody_midi_to_arr(midi_data_name)
     print('extracted_melody_dic result')
     print(extracted_melody_dic)
 
     pred = model.predict(arr)
+
+    print(pred)
     
-    concat_arr_to_midi(midi_data_name, pred)
+    # concat_arr_to_midi(midi_data_name, pred)
 
     # send 'test.mid' to client
     # os.remove(midi_data_name)
