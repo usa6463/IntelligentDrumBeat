@@ -12,8 +12,8 @@ import re
 
 time_num = 2000
 case_num = 512
-batch_size = 5
-nb_epoch = 1
+batch_size = 10
+nb_epoch = 20
 loss = 'categorical_crossentropy'
 optimizer = 'adam'
 
@@ -22,6 +22,7 @@ def train_text_to_arr(song_start, song_end, melody, drum):
 
     x_train_data = None
     y_train_data = None
+    # range(len(song_start))
     for i in tqdm(range(len(song_start))):
         length = song_end[i] - song_start[i] - 1
         x_train = np.zeros((1, time_num, case_num), dtype=np.bool)    
