@@ -8,15 +8,16 @@ import random
 import sys
 import os
 from tqdm import tqdm
+import re
 
-time_num = 10
+time_num = 5000
 case_num = 512
-batch_size = 1
+batch_size = 10
 nb_epoch = 1
 loss = 'categorical_crossentropy'
 optimizer = 'adam'
 
-def train_text_to_arr(time_num, case_num, song_start, song_end):
+def train_text_to_arr(song_start, song_end, melody, drum):
     print('process text to ndarray')
 
     x_train_data = None
@@ -56,7 +57,7 @@ def train_text_to_arr(time_num, case_num, song_start, song_end):
 def pred_to_drum_track():
     pass
 
-def get_model(song_num, time_num, case_num, x_train, y_train):
+def get_model(song_num, x_train, y_train):
     # function making new model
     model = Sequential()
     model.add(LSTM(song_num, return_sequences=True, input_shape=(time_num, case_num)))
@@ -128,18 +129,24 @@ def predict(arr):
 
     return preds
 
-if __name__=='__main__':
-    melody_fd = open('../preprocessing/melody_train.txt')
+def initial(drum_file_name):
+    p = re.compile(r'\D*(?P<num>\d*)[.]txt')
+    m = p.match(drum_file_name)
+    num = m.group('num')
+    print(num)
+
+    melody_fd = open('./train/melody_train' + num + '.txt')
     melody_txt = melody_fd.read()
     melody = melody_txt.split(' ')[:-1]
     melody_fd.close()
 
-    drum_fd = open('../preprocessing/drum_train.txt')
+    drum_fd = open(drum_file_name)
     drum_txt = drum_fd.read()
     drum = drum_txt.split(' ')[:-1]
     drum_fd.close()
 
     if len(drum) != len(melody):
+        print(drum_file_name)
         print('train file has the problem')
 
     song_start = []
@@ -153,13 +160,24 @@ if __name__=='__main__':
     song_num = len(song_start)
     print('train song num : {}'.format(song_num))
 
-    for i in range(0, song_num, 1):
-        x_train, y_train = train_text_to_arr(time_num, case_num, song_start[i:i+1], song_end[i:i+1])
+    return song_start, song_end, song_num, melody, drum
+
+
+if __name__=='__main__':
+    folder = './train/'
+    drum_file_list = os.listdir(folder)
+    drum_file_list = [f for f in drum_file_list if f.startswith('drum')]
+    for f in tqdm(drum_file_list):    
+        song_start, song_end, song_num, melody, drum = initial(folder + f)
+        x_train, y_train = train_text_to_arr(song_start, song_end, melody, drum)
+
         print(x_train.shape)
         print('get x_train, y_train')
         if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
             print('start get_model')
-            get_model(song_num, time_num, case_num, x_train, y_train)
+            get_model(song_num, x_train, y_train)
+            print('end get_model')
         else:
             print('start update_model')
             update_model(x_train, y_train)
+            print('end update_model')
