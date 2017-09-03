@@ -24,7 +24,8 @@ def train_text_to_arr(song_start, song_end, melody, drum):
     x_train_data = None
     y_train_data = None
     
-    for i in tqdm(range(len(song_start))):
+    #len(song_start)
+    for i in tqdm(range(1)):
         length = song_end[i] - song_start[i] - 1
 
         for separ in range(0, length, step):
