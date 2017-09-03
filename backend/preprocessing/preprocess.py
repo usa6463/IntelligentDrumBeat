@@ -293,8 +293,10 @@ if __name__ == '__main__':
         midi_data = pretty_midi.PrettyMIDI(midi_dir + '/' + f)
         inst = midi_data.instruments
         if len(inst) != 2:
+            print 'instrument problem'
             continue
         if (len(inst[0].notes) < 100) or (len(inst[1].notes) < 100):
+            print 'note num problem'
             continue
 
         print f

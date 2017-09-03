@@ -10,7 +10,7 @@ import os
 from tqdm import tqdm
 import re
 
-time_num = 5000
+time_num = 2000
 case_num = 512
 batch_size = 5
 nb_epoch = 1

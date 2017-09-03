@@ -79,6 +79,8 @@ def concat_arr_to_midi(midi_data_name, arr):
         
         for time_i in range(len(part)-1):
             total_time_i = i*separate_power+time_i
+            if total_time_i >= model.time_num:
+                break
             one_index = list(arr[0][total_time_i]).index(1)
             range_list = [8,7,6,5,4,3,2,1,0]
             for k in range_list:
@@ -108,7 +110,7 @@ if __name__ == '__main__':
 
     print(pred)
     
-    # concat_arr_to_midi(midi_data_name, pred)
+    concat_arr_to_midi(midi_data_name, pred)
 
     # send 'test.mid' to client
     # os.remove(midi_data_name)
