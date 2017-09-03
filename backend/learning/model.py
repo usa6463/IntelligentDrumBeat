@@ -12,7 +12,7 @@ import re
 
 time_num = 5000
 case_num = 512
-batch_size = 10
+batch_size = 5
 nb_epoch = 1
 loss = 'categorical_crossentropy'
 optimizer = 'adam'
@@ -118,15 +118,21 @@ def predict(arr):
     print('predicting...')
     preds = model.predict(arr, verbose=0)
 
+    dic = {}
     for i in range(0, time_num):
         time = preds[0][i]
         max_index = np.argmax(time)
+        if max_index in dic:
+            dic[max_index] += 1
+        else:
+            dic[max_index] = 1
+
         for j in range(0, case_num):
             if j == max_index:
                 preds[0][i][j] = 1    
             else:
                 preds[0][i][j] = 0
-
+    print(dic)
     return preds
 
 def initial(drum_file_name):
