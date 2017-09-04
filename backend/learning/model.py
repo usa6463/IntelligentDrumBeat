@@ -10,13 +10,13 @@ import os
 from tqdm import tqdm
 import re
 
-time_num = 16
+time_num = 32
 case_num = 512
 batch_size = 10
-nb_epoch = 10
+nb_epoch = 25
 loss = 'categorical_crossentropy'
 optimizer = 'rmsprop'
-step = 4
+step = int(time_num/4)
 
 def train_text_to_arr(song_start, song_end, melody, drum):
     print('process text to ndarray')
@@ -24,8 +24,8 @@ def train_text_to_arr(song_start, song_end, melody, drum):
     x_train_data = None
     y_train_data = None
     
-    #range(len(song_start))
-    for i in tqdm(range(1)):
+    # range(len(song_start))
+    for i in tqdm(range(len(song_start))):
         length = song_end[i] - song_start[i] - 1
 
         for separ in range(0, length, step):
@@ -98,14 +98,10 @@ def pred_to_drum_track():
 def get_model(song_num, x_train, y_train):
     # function making new model
     model = Sequential()
-    model.add(LSTM(song_num, return_sequences=True, input_shape=(time_num, case_num)))
+    model.add(LSTM(128, return_sequences=True, input_shape=(time_num, case_num)))
     model.add(Dropout(0.2))
-    model.add(LSTM(song_num, return_sequences=True))
+    model.add(LSTM(128, return_sequences=True))
     model.add(Dropout(0.2))
-    # model.add(LSTM(song_num, return_sequences=True))
-    # model.add(Dropout(0.2))
-    # model.add(LSTM(song_num, return_sequences=True))
-    # model.add(Dropout(0.2))
 
     model.add(Dense(case_num))
     model.add(Activation('softmax'))

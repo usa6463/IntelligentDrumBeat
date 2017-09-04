@@ -4,7 +4,7 @@ import pretty_midi
 from config import *
 from tqdm import tqdm
 
-separate_power = 16
+separate_power = 32
 
 def drum_text_to_midi(drum_dir, f, midi_dir):
     global separate_power

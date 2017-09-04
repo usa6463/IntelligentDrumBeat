@@ -2,13 +2,17 @@ import model
 import pretty_midi
 import numpy as np
 
-separate_power = 16
+separate_power = model.time_num
 
 def concat_repeat(midi_data_name, arr):
     midi_data = pretty_midi.PrettyMIDI(midi_data_name)
     allowed_pitch = [36, 38, 42, 46, 41, 45, 48, 51, 49]
     generated_drum = pretty_midi.Instrument(program=0)
     generated_drum.is_drum = True
+
+    for inst in midi_data.instruments:
+        if inst.is_drum == True:
+            inst.notes = []
 
     beats = midi_data.get_downbeats()
     for i in range(len(beats)-1):
