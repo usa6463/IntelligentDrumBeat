@@ -13,10 +13,10 @@ import re
 time_num = 32
 case_num = 512
 batch_size = 10
-nb_epoch = 1
+nb_epoch = 50
 loss = 'categorical_crossentropy'
 optimizer = 'adam'
-step = 16
+step = 32
 
 def train_text_to_arr(song_start, song_end, melody, drum):
     print('process text to ndarray')
@@ -67,15 +67,15 @@ def train_text_to_arr(song_start, song_end, melody, drum):
                     melody_dic[0] += 1 
                     drum_dic[0] += 1
 
-            # print('train data arr result')
-            # melody_count = 0
-            # drum_count = 0
-            # for key in melody_dic:
-            #     melody_count += melody_dic[key]
-            # for key in drum_dic:
-            #     drum_count += drum_dic[key]
-            # print(melody_dic, melody_count)
-            # print(drum_dic, drum_count)
+            print('train data arr result')
+            melody_count = 0
+            drum_count = 0
+            for key in melody_dic:
+                melody_count += melody_dic[key]
+            for key in drum_dic:
+                drum_count += drum_dic[key]
+            print(melody_dic, melody_count)
+            print(drum_dic, drum_count)
             
             if type(x_train_data) != type(x_train):
                 x_train_data = x_train
@@ -150,22 +150,23 @@ def predict(arr):
     print('predicting...')
     preds = model.predict(arr, verbose=0)
 
-    dic = {}
-    for i in range(0, time_num):
-        time = preds[0][i]
-        max_index = np.argmax(time)
-        if max_index in dic:
-            dic[max_index] += 1
-        else:
-            dic[max_index] = 1
-
-        for j in range(0, case_num):
-            if j == max_index:
-                preds[0][i][j] = 1    
-            else:
-                preds[0][i][j] = 0
-    print('predicted result')
-    print(dic)
+    for bar_index in range(len(preds)):
+        dic = {}
+        for i in range(0, time_num):
+            time = preds[bar_index][i]
+            max_index = np.argmax(time)
+            if not max_index in dic:
+                dic[max_index] = 1
+                
+            for j in range(0, case_num):
+                if j == max_index:
+                    preds[bar_index][i][j] = 1
+                    dic[j] += 1    
+                else:
+                    preds[bar_index][i][j] = 0
+                    
+        print(str(bar_index) + ' th ' + 'predicted result')
+        print(dic)
     return preds
 
 def initial(drum_file_name):

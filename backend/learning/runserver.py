@@ -42,8 +42,6 @@ def separate(file_name):
     midi_data = pretty_midi.PrettyMIDI(file_name)
     arr = np.zeros((1, model.time_num, model.case_num), dtype=np.bool)
 
-    extracted_melody_dic = [0, 0]
-
     # melody select
     melody_inst = None
     for inst in midi_data.instruments:
@@ -51,51 +49,47 @@ def separate(file_name):
             melody_inst = inst
 
     beats = midi_data.get_downbeats()
-    order_check = 0
-    for i in range(len(beats)-1):
-        order_check += 1
+    x_train = np.zeros((len(beats)-1, model.time_num, model.case_num), dtype=np.bool)
+    
+    for i in range(len(beats)-1): # bar
         start = beats[i]
         end = beats[i+1]
+        interval = float((end-start)) / separate_power
+        extracted_melody_dic = [0, 0]  
+        
+        part = []
+        for j in range(separate_power):
+            part.append(start)
+            start += interval
+        part.append(end)
+        
+        for time_i in range(len(part)-1): # bar / 32
+            # only 1 pitch allowed
+            min_pitch = 200
+            check = False
 
-        if order_check != 4:
-            continue
+            for note in melody_inst.notes:
+                if (note.start >= part[time_i]) and (note.start <= part[time_i+1]) and (note.pitch<min_pitch):
+                    check = True
+                    min_pitch = note.pitch
+                    
+            if check:
+                x_train[i][time_i][1] = 1
+                extracted_melody_dic[1] += 1
+            else:
+                x_train[i][time_i][0] = 1
+                extracted_melody_dic[0] += 1
+        
+        count = 0
+        for key in extracted_melody_dic:
+            count += key
+        print(str(i) + 'th ' + 'extracted melody')
+        print(extracted_melody_dic, count)
 
-        for note in melody_inst.notes:
-            if (note.start >= start) and (note.start <= end):
-                interval = float((end-start)) / separate_power
-                
-                part = []
-                for j in range(separate_power):
-                    part.append(start)
-                    start += interval
-                part.append(end)
-                
-                for time_i in range(len(part)-1):
-                    total_time_i = i*separate_power+time_i
-
-                    # only 1 pitch allowed
-                    min_pitch = 200
-                    check = False
-
-                    if total_time_i >= model.time_num:
-                        return arr, extracted_melody_dic
-
-                    for note in melody_inst.notes:
-                        if (note.start >= part[time_i]) and (note.start <= part[time_i+1]) and (note.pitch<min_pitch):
-                            check = True
-                            min_pitch = note.pitch
-                            
-                    if check:
-                        arr[0][time_i][1] = 1
-                        extracted_melody_dic[1] += 1
-                    else:
-                        arr[0][time_i][0] = 1
-                        extracted_melody_dic[0] += 1
-                        
-                return arr, extracted_melody_dic
-
-    print('input is too short or has no melody')
-    return None, None
+    print('---------------------------------x_train shape----------------------------')
+    print(x_train.shape)
+    print(x_train)
+    return x_train, len(beats)-1
 
 
 def melody_midi_to_arr(file_name):
@@ -196,15 +190,16 @@ if __name__ == '__main__':
 
     midi_data_name = 'test.mid'
 
-    arr, extracted_melody_dic = separate(midi_data_name)
-    print('extracted_melody_dic result')
-    print(extracted_melody_dic)
+    arr, bar_num = separate(midi_data_name)
 
     pred = model.predict(arr)
-
-    print(pred)
+    print(pred.shape)
+    # pred = np.zeros((bar_num, model.time_num, model.case_num), dtype=np.bool)
+    # for i, bar in enumerate(arr):
+    #     pred[i] = model.predict(bar)
     
-    concat_repeat(midi_data_name, pred)
+    
+    # concat_repeat(midi_data_name, pred)
 
     # send 'test.mid' to client
     # os.remove(midi_data_name)
