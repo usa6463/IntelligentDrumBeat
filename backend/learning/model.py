@@ -27,12 +27,21 @@ def train_text_to_arr(song_start, song_end, melody, drum):
     # range(len(song_start))
     for i in tqdm(range(len(song_start))):
         length = song_end[i] - song_start[i] - 1
+        pitch_sum = 0
+        pitch_count = 0
+        for note_i in range(song_start[i]+1, song_end[i]):
+            if melody[note_i] != '0':
+                pitch_count += 1
+                pitch_sum += int(melody[note_i])
+        pitch_avg = (pitch_sum / pitch_count)
+        pitch_low = pitch_avg - 6
+        pitch_high = pitch_avg + 6
 
         for separ in range(0, length, step):
             x_train = np.zeros((1, time_num, case_num), dtype=np.bool)    
             y_train = np.zeros((1, time_num, case_num), dtype=np.bool)
 
-            melody_dic = {0:0, 1:0}
+            melody_dic = {0:0, 1:0, 2:0, 3:0}
             drum_dic = {0:0}
             
             word_index = song_start[i] + separ
@@ -44,18 +53,22 @@ def train_text_to_arr(song_start, song_end, melody, drum):
                 if word_index < song_end[i]:
                     # melody part
                     case_num_index = int(melody[word_index])
-                    case_num_index = int(case_num_index/10)
-                    x_train[0][j][case_num_index] = 1
-                    if not case_num_index in melody_dic:
-                        melody_dic[case_num_index] = 0
-                    melody_dic[case_num_index] += 1 
-                    
-                    # if case_num_index != 0:
-                    #     x_train[0][j][1] = 1
-                    #     melody_dic[1] += 1 
-                    # else:
-                    #     x_train[0][j][0] = 1
-                    #     melody_dic[0] += 1 
+                    if case_num_index == 0 :
+                        x_train[0][j][0] = 1
+                        melody_dic[0] += 1 
+                    elif case_num_index >= pitch_high :
+                        x_train[0][j][3] = 1
+                        melody_dic[3] += 1 
+                    elif case_num_index <= pitch_low:
+                        x_train[0][j][1] = 1
+                        melody_dic[1] += 1 
+                    else:
+                        x_train[0][j][2] = 1
+                        melody_dic[2] += 1 
+
+                    # if not case_num_index in melody_dic:
+                    #     melody_dic[case_num_index] = 0
+                    # melody_dic[case_num_index] += 1 
                     
                     # drum part
                     case_num_index = 0

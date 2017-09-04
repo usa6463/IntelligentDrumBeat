@@ -54,12 +54,22 @@ def separate(file_name):
 
     beats = midi_data.get_downbeats()
     x_train = np.zeros((len(beats)-1, model.time_num, model.case_num), dtype=np.bool)
+
+    pitch_sum = 0
+    pitch_count = 0
+    for note in melody_inst.notes:
+        if note.pitch != '0':
+            pitch_count += 1
+            pitch_sum += note.pitch
+    pitch_avg = (pitch_sum / pitch_count)
+    pitch_low = pitch_avg - 6
+    pitch_high = pitch_avg + 6
     
     for i in range(len(beats)-1): # bar
         start = beats[i]
         end = beats[i+1]
         interval = float((end-start)) / separate_power
-        extracted_melody_dic = {0:0}
+        extracted_melody_dic = {0:0, 1:0, 2:0, 3:0}
         
         part = []
         for j in range(separate_power):
@@ -78,11 +88,15 @@ def separate(file_name):
                     min_pitch = note.pitch
 
             if check:
-                min_pitch = int(min_pitch/10)
-                x_train[0][j][min_pitch] = 1
-                if not min_pitch in extracted_melody_dic:
-                    extracted_melody_dic[min_pitch] = 0
-                extracted_melody_dic[min_pitch] += 1 
+                if min_pitch >= pitch_high :
+                    x_train[0][j][3] = 1
+                    extracted_melody_dic[3] += 1 
+                elif min_pitch <= pitch_low:
+                    x_train[0][j][1] = 1
+                    extracted_melody_dic[1] += 1 
+                else:
+                    x_train[0][j][2] = 1
+                    extracted_melody_dic[2] += 1 
 
                 # x_train[i][time_i][1] = 1
                 # extracted_melody_dic[1] += 1
