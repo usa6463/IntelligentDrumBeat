@@ -23,7 +23,7 @@ def concat_repeat(midi_data_name, arr):
         part.append(end)
         
         for time_i in range(len(part)-1):
-            one_index = list(arr[0][time_i]).index(1)
+            one_index = list(arr[i][time_i]).index(1)
             range_list = [8,7,6,5,4,3,2,1,0]
             for k in range_list:
                 if one_index >= 2**k:
@@ -194,12 +194,8 @@ if __name__ == '__main__':
 
     pred = model.predict(arr)
     print(pred.shape)
-    # pred = np.zeros((bar_num, model.time_num, model.case_num), dtype=np.bool)
-    # for i, bar in enumerate(arr):
-    #     pred[i] = model.predict(bar)
     
-    
-    # concat_repeat(midi_data_name, pred)
+    concat_repeat(midi_data_name, pred)
 
     # send 'test.mid' to client
     # os.remove(midi_data_name)

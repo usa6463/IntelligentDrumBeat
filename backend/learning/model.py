@@ -13,7 +13,7 @@ import re
 time_num = 32
 case_num = 512
 batch_size = 10
-nb_epoch = 50
+nb_epoch = 2
 loss = 'categorical_crossentropy'
 optimizer = 'adam'
 step = 32
@@ -156,7 +156,7 @@ def predict(arr):
             time = preds[bar_index][i]
             max_index = np.argmax(time)
             if not max_index in dic:
-                dic[max_index] = 1
+                dic[max_index] = 0
                 
             for j in range(0, case_num):
                 if j == max_index:
@@ -164,7 +164,7 @@ def predict(arr):
                     dic[j] += 1    
                 else:
                     preds[bar_index][i][j] = 0
-                    
+
         print(str(bar_index) + ' th ' + 'predicted result')
         print(dic)
     return preds
