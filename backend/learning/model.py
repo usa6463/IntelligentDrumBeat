@@ -13,7 +13,7 @@ import re
 time_num = 16
 case_num = 512
 batch_size = 10
-nb_epoch = 50
+nb_epoch = 10
 loss = 'categorical_crossentropy'
 optimizer = 'rmsprop'
 step = 4
@@ -24,7 +24,7 @@ def train_text_to_arr(song_start, song_end, melody, drum):
     x_train_data = None
     y_train_data = None
     
-    #len(song_start)
+    #range(len(song_start))
     for i in tqdm(range(1)):
         length = song_end[i] - song_start[i] - 1
 
@@ -44,12 +44,18 @@ def train_text_to_arr(song_start, song_end, melody, drum):
                 if word_index < song_end[i]:
                     # melody part
                     case_num_index = int(melody[word_index])
-                    if case_num_index != 0:
-                        x_train[0][j][1] = 1
-                        melody_dic[1] += 1 
-                    else:
-                        x_train[0][j][0] = 1
-                        melody_dic[0] += 1 
+                    case_num_index = int(case_num_index/10)
+                    x_train[0][j][case_num_index] = 1
+                    if not case_num_index in melody_dic:
+                        melody_dic[case_num_index] = 0
+                    melody_dic[case_num_index] += 1 
+                    
+                    # if case_num_index != 0:
+                    #     x_train[0][j][1] = 1
+                    #     melody_dic[1] += 1 
+                    # else:
+                    #     x_train[0][j][0] = 1
+                    #     melody_dic[0] += 1 
                     
                     # drum part
                     case_num_index = 0
@@ -96,6 +102,10 @@ def get_model(song_num, x_train, y_train):
     model.add(Dropout(0.2))
     model.add(LSTM(song_num, return_sequences=True))
     model.add(Dropout(0.2))
+    # model.add(LSTM(song_num, return_sequences=True))
+    # model.add(Dropout(0.2))
+    # model.add(LSTM(song_num, return_sequences=True))
+    # model.add(Dropout(0.2))
 
     model.add(Dense(case_num))
     model.add(Activation('softmax'))

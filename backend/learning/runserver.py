@@ -55,7 +55,7 @@ def separate(file_name):
         start = beats[i]
         end = beats[i+1]
         interval = float((end-start)) / separate_power
-        extracted_melody_dic = [0, 0]  
+        extracted_melody_dic = {0:0}
         
         part = []
         for j in range(separate_power):
@@ -72,17 +72,23 @@ def separate(file_name):
                 if (note.start >= part[time_i]) and (note.start <= part[time_i+1]) and (note.pitch<min_pitch):
                     check = True
                     min_pitch = note.pitch
-                    
+
             if check:
-                x_train[i][time_i][1] = 1
-                extracted_melody_dic[1] += 1
+                min_pitch = int(min_pitch/10)
+                x_train[0][j][min_pitch] = 1
+                if not min_pitch in extracted_melody_dic:
+                    extracted_melody_dic[min_pitch] = 0
+                extracted_melody_dic[min_pitch] += 1 
+
+                # x_train[i][time_i][1] = 1
+                # extracted_melody_dic[1] += 1
             else:
                 x_train[i][time_i][0] = 1
                 extracted_melody_dic[0] += 1
         
         count = 0
         for key in extracted_melody_dic:
-            count += key
+            count += extracted_melody_dic[key]
         print(str(i) + 'th ' + 'extracted melody')
         print(extracted_melody_dic, count)
 
@@ -193,8 +199,6 @@ if __name__ == '__main__':
     arr, bar_num = separate(midi_data_name)
 
     pred = model.predict(arr)
-    print(pred.shape)
-    
     concat_repeat(midi_data_name, pred)
 
     # send 'test.mid' to client
