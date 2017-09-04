@@ -10,13 +10,13 @@ import os
 from tqdm import tqdm
 import re
 
-time_num = 32
+time_num = 16
 case_num = 512
 batch_size = 10
-nb_epoch = 2
+nb_epoch = 50
 loss = 'categorical_crossentropy'
-optimizer = 'adam'
-step = 32
+optimizer = 'rmsprop'
+step = 4
 
 def train_text_to_arr(song_start, song_end, melody, drum):
     print('process text to ndarray')

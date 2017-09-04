@@ -2,7 +2,7 @@ import model
 import pretty_midi
 import numpy as np
 
-separate_power = 32
+separate_power = 16
 
 def concat_repeat(midi_data_name, arr):
     midi_data = pretty_midi.PrettyMIDI(midi_data_name)
