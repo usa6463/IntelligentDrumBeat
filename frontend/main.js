@@ -1,6 +1,6 @@
 //main.js
 
-
+var io = require('socket.io')
 const electron = require('electron')
 const {app, BrowserWindow} = electron
 

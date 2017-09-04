@@ -115,7 +115,13 @@
 									  </script>-->
          						</div>
 
-         						<script>
+         						<script src="http://localhost:80/socket.io/socket.io.js"></script>
+
+
+
+
+         						<script >
+
 						    		(function () {
         								var holder = document.getElementById('box2');
         								holder.ondragover = () => {
@@ -129,10 +135,14 @@
         								};
         								holder.ondrop = (e) => {
 								            e.preventDefault();
-
+								            
 								            var files = e.dataTransfer.files;
 								            console.log(files);
-								            
+								            var socket = io.connect('http://localhost:80');  //localhost로 연결합니다.
+         									socket.on('news', function (data) {  // 서버에서 news 이벤트가 일어날 때 데이터를 받습니다.
+         									console.log(data);
+         									socket.emit('my other event', { my: 'data' });   //서버에 my other event 이벤트를 보냅니다.
+         									});
 								            
 								            return false;
 								        };
@@ -186,6 +196,7 @@
           							</div>
           							-->
           						</div>
+          						<!--
        							<script>
 								    'use strict'
 								
@@ -196,7 +207,7 @@
 								    dropEL._initDroppable(dropEL);
 								    require('./renderer.js');
 								</script>
-
+								-->
           						<!--
           						<script>
 									const holder = document.getElementById('drop2')
@@ -896,9 +907,11 @@
 		<script src="assets/js/jquery.scrolly.min.js"></script>
 		<script src="assets/js/skel.min.js"></script>
 		<script src="assets/js/util.js"></script>
+		<!--
 		<script>
 		require('./renderer.js');
         </script>
+        -->
 		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 		<!--
 		<script src="assets/js/main.js"></script>
