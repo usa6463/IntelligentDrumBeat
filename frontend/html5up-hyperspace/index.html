@@ -29,6 +29,7 @@
   		<script src="./HTML5 Piano - FULL 88 keys_files/jquery.hotkeys.js.다운로드"></script>
   		<script src="./HTML5 Piano - FULL 88 keys_files/keyObjects.js.다운로드"></script>
   		<script src="./HTML5 Piano - FULL 88 keys_files/main.js.다운로드"></script>
+  		<!--<script data-main="../main" src="require.js"></script>-->
 	</head>
 	<body >
 
@@ -114,13 +115,166 @@
 									    });
 									  </script>-->
          						</div>
-
+         						<!--	
          						<script src="http://localhost:80/socket.io/socket.io.js"></script>
-
+								-->
 
 
 
          						<script >
+         							
+						    		(function () {
+        								var holder = document.getElementById('box2');
+        								holder.ondragover = () => {
+        								    return false;
+        								};
+        								holder.ondragleave = () => {
+        								    return false;
+        								};
+        								holder.ondragend = () => {
+        								    return false;
+        								};
+        								holder.ondrop = (e) => {
+        									/*
+        									var net = require('net');
+											var fs = require('fs');
+											
+											
+											var PORT = 9001;
+											var HOST = '127.0.0.1';
+											var FILEPATH = '/home/steve/Work/Node.js/FileTransfer/random.fil';
+											
+											var client = new net.Socket()
+											
+											//connect to the server
+											client.connect(PORT,HOST,function() {
+											    'Client Connected to server'
+											
+											    //send a file to the server
+											    var fileStream = fs.createReadStream(FILEPATH);
+											    fileStream.on('error', function(err){
+											        console.log(err);
+											    })
+											
+											    fileStream.on('open',function() {
+											        fileStream.pipe(client);
+											    });
+											
+											});
+											
+											//handle closed
+											client.on('close', function() {
+											    console.log('server closed connection')
+											});
+											
+											client.on('error', function(err) {
+											    console.log(err);
+											});
+											*/
+        									
+        									//var fs = require('fs');
+
+								            e.preventDefault();
+								            //주의사항 파일 전체경로를 알수없어 바로 해당폴더에서 파일을 불러온다.
+											var file = e.dataTransfer.files[0].name,
+											reader = new FileReader();
+											reader.onload = function (event) {
+											  console.log(event.target);
+											};
+											console.log(file);
+											//reader.readAsDataURL(file);
+
+											var net = require('net');
+											var fs = require('fs');
+											
+											
+											var PORT = 9001;
+											var HOST = '127.0.0.1';
+											var FILEPATH = './'+ file;
+											console.log(FILEPATH);
+											var client = new net.Socket()
+											
+											//connect to the server
+											client.connect(PORT,HOST,function() {
+											    'Client Connected to server'
+											
+											    //send a file to the server
+											    var fileStream = fs.createReadStream(FILEPATH);
+											    fileStream.on('error', function(err){
+											        console.log(err);
+											    })
+											
+											    fileStream.on('open',function() {
+											        fileStream.pipe(client);
+											    });
+											
+											});
+											
+											//handle closed
+											client.on('close', function() {
+											    console.log('server closed connection')
+											});
+											
+											client.on('error', function(err) {
+											    console.log(err);
+											});
+
+
+											return false;
+											
+
+
+								            /*
+								            console.log(e.dataTransfer.files.path);
+											for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+												console.log(e.dataTransfer.files[i].path);
+											}
+											return false;
+											*/
+								            /*
+								            //e.dataTransfer.setData("data", e.target.id);
+								            var data = e.dataTransfer.items;
+								            //var files = e.dataTransfer.files;
+								            console.log(data);
+
+											var net = require('net');
+											
+											var HOST = '127.0.0.1';
+											var PORT = 6969;
+											
+											var client = new net.Socket();
+											client.connect(PORT, HOST, function() {
+											
+											    console.log('CONNECTED TO: ' + HOST + ':' + PORT);
+											    // Write a message to the socket as soon as the client is connected, the server will receive it as message from the client 
+											    client.write(data);
+											
+											});
+											
+											// Add a 'data' event handler for the client socket
+											// data is what the server sent to this socket
+											client.on('data', function(data) {
+											    
+											    console.log('DATA: ' + data);
+											    // Close the client socket completely
+											    client.destroy();
+											   
+											});
+											
+											// Add a 'close' event handler for the client socket
+											client.on('close', function() {
+											    console.log('Connection closed');
+											});
+
+         									
+								            
+								            return false;
+								            */
+								        };
+								    })();
+								</script>
+								<!--backup
+								         						<script >
 
 						    		(function () {
         								var holder = document.getElementById('box2');
@@ -138,7 +292,9 @@
 								            
 								            var files = e.dataTransfer.files;
 								            console.log(files);
+								            
 								            var socket = io.connect('http://localhost:80');  //localhost로 연결합니다.
+								            socket.emit('data', files);
          									socket.on('news', function (data) {  // 서버에서 news 이벤트가 일어날 때 데이터를 받습니다.
          									console.log(data);
          									socket.emit('my other event', { my: 'data' });   //서버에 my other event 이벤트를 보냅니다.
@@ -148,7 +304,7 @@
 								        };
 								    })();
 								</script>
-
+								-->
          							<div class="inner">
 										<center>
 											<h1>Input midi file</h1>

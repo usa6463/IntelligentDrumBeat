@@ -1,6 +1,6 @@
 //main.js
 
-var io = require('socket.io')
+
 const electron = require('electron')
 const {app, BrowserWindow} = electron
 
@@ -8,7 +8,7 @@ const {app, BrowserWindow} = electron
 //const BrowserWindow = electron.BrowserWindow	//네이티브 브라우저
 //const {app2, Menu} = require('electron')
 //require('electron-drag-drop');
-
+require('electron-debug')({showDevTools: true});
 
 //frame
 
