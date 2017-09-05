@@ -190,7 +190,8 @@
 											net.bytesRead = 200000;
 											var PORT = 9001;
 											var HOST = '127.0.0.1';
-											var FILEPATH = './'+ file;
+											//set your directroy
+											var FILEPATH = 'C:/Users/INSU/Desktop/'+ file;
 											console.log(FILEPATH);
 											var client = new net.Socket()
 											client.bufferSize = 200000;
@@ -227,7 +228,7 @@
 												  //writeMyData(fd);
 												});
 												*/
-												fs.writeFile('./receive.mid', data, 'binary', function(error){
+												fs.writeFile(FILEPATH+'receive.mid', data, 'binary', function(error){
 													console.log('write end')
 												})
 											});
