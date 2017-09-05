@@ -208,6 +208,47 @@ def concat_arr_to_midi(midi_data_name, arr):
     midi_data.write('test_drum_added.mid')
 
 
+def cutting(pred):
+    for bar_i in range(len(pred)-1): # except last one
+        current_bar = pred[bar_i]
+        next_bar = pred[bar_i+1]
+        
+        current_dic = {}
+        current_count = 0
+        next_dic = {}
+        next_count = 0
+
+        for part in current_bar:
+            index = list(part).index(1)
+            if not index in current_dic:
+                current_dic[index] = 1
+            else:
+                current_dic[index] += 1
+
+            if index != 0:
+                current_count += 1
+        
+        for part in next_bar:
+            index = list(part).index(1)
+            if not index in next_dic:
+                next_dic[index] = 1
+            else:
+                next_dic[index] += 1
+
+            if index != 0:
+                next_count += 1
+
+        current_key_list = list(current_dic.keys())
+        next_key_list = list(next_dic.keys())
+
+        if (current_key_list != next_key_list):
+            pass
+        elif current_count != next_count:
+            pass
+        else:
+            print(str(bar_i+1) + ' th bar changed')
+            next_bar = current_bar
+
 if __name__ == '__main__':
     # download MIDI file from client using socket. 
     # save MIDI file with name as 'test.mid'
@@ -217,6 +258,7 @@ if __name__ == '__main__':
     arr, bar_num = separate(midi_data_name)
 
     pred = model.predict(arr)
+    cutting(pred)
     concat_repeat(midi_data_name, pred)
 
     # send 'test.mid' to client
