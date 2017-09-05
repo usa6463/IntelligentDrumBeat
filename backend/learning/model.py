@@ -223,34 +223,20 @@ def initial(drum_file_name):
 
 
 if __name__=='__main__':
-    if sys.argv[1] == 'make':
-        folder = './train/'
-        folder_list = [d for d in os.listdir(folder) if os.path.isdir(folder+d)]
+    folder = './train/'
+    drum_file_list = os.listdir(folder)
+    drum_file_list = [f for f in drum_file_list if f.startswith('drum')]
+    for f in tqdm(drum_file_list):    
+        song_start, song_end, song_num, melody, drum = initial(folder + f)
+        x_train, y_train = train_text_to_arr(song_start, song_end, melody, drum)
 
-        for d in folder_list:
-            total_folder = folder + d + '/'
-            drum_file_list = os.listdir(total_folder)
-            drum_file_list = [f for f in drum_file_list if f.startswith('drum')]
-            song_start, song_end, song_num, melody, drum = initial(total_folder + drum_file_list[0])
-            x_train, y_train = train_text_to_arr(song_start, song_end, melody, drum)
-            get_model(song_num, x_train, y_train, total_folder)
-        pass
-
-    else:
-        folder = './train/'
-        drum_file_list = os.listdir(folder)
-        drum_file_list = [f for f in drum_file_list if f.startswith('drum')]
-        for f in tqdm(drum_file_list):    
-            song_start, song_end, song_num, melody, drum = initial(folder + f)
-            x_train, y_train = train_text_to_arr(song_start, song_end, melody, drum)
-
-            print(x_train.shape)
-            print('get x_train, y_train')
-            if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
-                print('start get_model')
-                get_model(song_num, x_train, y_train, './')
-                print('end get_model')
-            else:
-                print('start update_model')
-                update_model(x_train, y_train)
-                print('end update_model')
+        print(x_train.shape)
+        print('get x_train, y_train')
+        if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
+            print('start get_model')
+            get_model(song_num, x_train, y_train, './')
+            print('end get_model')
+        else:
+            print('start update_model')
+            update_model(x_train, y_train)
+            print('end update_model')

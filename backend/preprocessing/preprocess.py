@@ -191,7 +191,7 @@ def extract_melody(midi_dir, f):
         if not inst.is_drum :
             melody_inst = inst
 
-    print (f, melody_inst.name, melody_inst.program)
+    print((f, melody_inst.name, melody_inst.program))
     beats = midi_data.get_downbeats()
     for i in range(len(beats)-1):
         start = beats[i]
@@ -277,7 +277,7 @@ if __name__ == '__main__':
         os.makedirs('./melody/')
     if os.path.exists('./midi/') == False:
         os.makedirs('./midi/')
-        print 'please input .mid files to ./midi directory!'
+        print('please input .mid files to ./midi directory!')
         exit()
 
     midi_dir = 'midi'
@@ -293,13 +293,13 @@ if __name__ == '__main__':
         midi_data = pretty_midi.PrettyMIDI(midi_dir + '/' + f)
         inst = midi_data.instruments
         if len(inst) != 2:
-            print 'instrument problem'
+            print('instrument problem')
             continue
         if (len(inst[0].notes) < 100) or (len(inst[1].notes) < 100):
-            print 'note num problem'
+            print('note num problem')
             continue
 
-        print f
+        print(f)
 
         drum_midi_to_text(midi_dir, f, drum_fd)
         melody_midi_to_text(midi_dir, f, melody_fd)
@@ -322,4 +322,4 @@ if __name__ == '__main__':
     # for f in melody_text_filenames:
     #     melody_text_to_midi(melody_dir, melody_text_filenames, midi_dir)
 
-    print 'done! for %d files' % len(midi_filenames)
+    print('done! for %d files' % len(midi_filenames))
