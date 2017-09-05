@@ -13,7 +13,7 @@ import re
 time_num = 32
 case_num = 512
 batch_size = 10
-nb_epoch = 25
+nb_epoch = 50
 loss = 'categorical_crossentropy'
 optimizer = 'rmsprop'
 step = int(time_num/4)
