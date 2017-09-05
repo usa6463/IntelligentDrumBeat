@@ -258,7 +258,6 @@ if __name__ == '__main__':
     server_sock.listen(10)
 
     while True:
-
         client_sock, addr = server_sock.accept()
         data = client_sock.recv(200000)
         # print(data)
@@ -278,6 +277,8 @@ if __name__ == '__main__':
         print(data2)
         client_sock.send(data2)
         f2.close();
+
+        client_sock.close()
 
     
         # send 'test.mid' to client
