@@ -13,7 +13,7 @@ import re
 time_num = 32
 case_num = 512
 batch_size = 10
-nb_epoch = 50
+nb_epoch = 100
 loss = 'categorical_crossentropy'
 optimizer = 'rmsprop'
 step = int(time_num/4)
@@ -108,12 +108,12 @@ def train_text_to_arr(song_start, song_end, melody, drum):
 def pred_to_drum_track():
     pass
 
-def get_model(song_num, x_train, y_train):
+def get_model(song_num, x_train, y_train, path):
     # function making new model
     model = Sequential()
-    model.add(LSTM(128, return_sequences=True, input_shape=(time_num, case_num)))
+    model.add(LSTM(256, return_sequences=True, input_shape=(time_num, case_num)))
     model.add(Dropout(0.2))
-    model.add(LSTM(128, return_sequences=True))
+    model.add(LSTM(256, return_sequences=True))
     model.add(Dropout(0.2))
 
     model.add(Dense(case_num))
@@ -123,10 +123,10 @@ def get_model(song_num, x_train, y_train):
     result = model.fit(x_train, y_train, batch_size=batch_size, nb_epoch=nb_epoch)
 
     model_json = model.to_json()
-    with open('model.json', 'w') as json_file:
+    with open(path + 'model.json', 'w') as json_file:
         json_file.write(model_json)
     # serialize weights to HDF5
-    model.save_weights('model.h5')
+    model.save_weights(path + 'model.h5')
     print('model saved')
 
 def update_model(x_train, y_train):
@@ -223,20 +223,34 @@ def initial(drum_file_name):
 
 
 if __name__=='__main__':
-    folder = './train/'
-    drum_file_list = os.listdir(folder)
-    drum_file_list = [f for f in drum_file_list if f.startswith('drum')]
-    for f in tqdm(drum_file_list):    
-        song_start, song_end, song_num, melody, drum = initial(folder + f)
-        x_train, y_train = train_text_to_arr(song_start, song_end, melody, drum)
+    if sys.argv[1] == 'make':
+        folder = './train/'
+        folder_list = [d for d in os.listdir(folder) if os.path.isdir(folder+d)]
 
-        print(x_train.shape)
-        print('get x_train, y_train')
-        if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
-            print('start get_model')
-            get_model(song_num, x_train, y_train)
-            print('end get_model')
-        else:
-            print('start update_model')
-            update_model(x_train, y_train)
-            print('end update_model')
+        for d in folder_list:
+            total_folder = folder + d + '/'
+            drum_file_list = os.listdir(total_folder)
+            drum_file_list = [f for f in drum_file_list if f.startswith('drum')]
+            song_start, song_end, song_num, melody, drum = initial(total_folder + drum_file_list[0])
+            x_train, y_train = train_text_to_arr(song_start, song_end, melody, drum)
+            get_model(song_num, x_train, y_train, total_folder)
+        pass
+
+    else:
+        folder = './train/'
+        drum_file_list = os.listdir(folder)
+        drum_file_list = [f for f in drum_file_list if f.startswith('drum')]
+        for f in tqdm(drum_file_list):    
+            song_start, song_end, song_num, melody, drum = initial(folder + f)
+            x_train, y_train = train_text_to_arr(song_start, song_end, melody, drum)
+
+            print(x_train.shape)
+            print('get x_train, y_train')
+            if not os.path.exists('./model.json') or not os.path.exists('./model.h5'):
+                print('start get_model')
+                get_model(song_num, x_train, y_train, './')
+                print('end get_model')
+            else:
+                print('start update_model')
+                update_model(x_train, y_train)
+                print('end update_model')
