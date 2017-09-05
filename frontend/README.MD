@@ -9,3 +9,6 @@ desktop app using electron
 ## .exe build
 - `npm run build`
 - .exe file will be generated in `./package`
+
+## warning
+- set your server and client directory. because this app is not implemented fully.
