@@ -15,20 +15,20 @@ separate_power = 32
 
 def check(file_name):
     if os.path.exists(file_name) == False:
-        print 'wrong filename!'
-        print usage
+        print('wrong filename!')
+        print(usage)
         exit()
 
     midi_data = pretty_midi.PrettyMIDI(file_name)
     insts = midi_data.instruments
     for i, inst_info in enumerate(insts):
         if not inst_info.is_drum:
-            print 'index {} : {}'.format(i, inst_info)
+            print('index {} : {}'.format(i, inst_info))
 
 def sample(file_name, indices):
     if os.path.exists(file_name) == False:
-        print 'wrong filename!'
-        print usage
+        print('wrong filename!')
+        print(usage)
         exit()
 
     midi_data = pretty_midi.PrettyMIDI(file_name)
@@ -116,6 +116,9 @@ def auto_extract():
     file_list = os.listdir('.')
     file_list = [f for f in file_list if f.endswith('.mid')]
 
+    if not os.path.exists('../midi'):
+        os.makedirs('../midi/')
+
     for f in tqdm(file_list):
         try:
             midi_data = pretty_midi.PrettyMIDI(f)
@@ -146,7 +149,7 @@ def auto_extract():
             extracted_melody.write('../midi/' + 'extract_' + f  + '.mid')
         except Exception as e:
             print(e)
-            print f + 'has error!'
+            print(f + 'has error!')
             if os.path.exists('../midi/' + f + '_extract' + '.mid'):
                 os.remove('../midi/' + f + '_extract' + '.mid')
 
