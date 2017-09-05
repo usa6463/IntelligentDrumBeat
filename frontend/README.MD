@@ -1,7 +1,7 @@
 # Front-End
 desktop app using electron
 
-## deploy (Linux)
+## deploy
 - `apt-get install nodejs`
 - `npm install`
 - `npm start` or `npm start debug` or `npm start package.json`
