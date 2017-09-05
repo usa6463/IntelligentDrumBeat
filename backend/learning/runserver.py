@@ -256,9 +256,12 @@ if __name__ == '__main__':
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_sock.bind( ('127.0.0.1', 9001))
     server_sock.listen(10)
+    print('server open')
 
     while True:
+
         client_sock, addr = server_sock.accept()
+        print('connect')
         data = client_sock.recv(200000)
         # print(data)
         f = open("test.mid",'wb');
