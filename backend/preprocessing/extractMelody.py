@@ -113,15 +113,15 @@ def findMelody(midi_data):
 
 
 def auto_extract():
-    file_list = os.listdir('.')
+    file_list = os.listdir('./raw_midi')
     file_list = [f for f in file_list if f.endswith('.mid')]
 
-    if not os.path.exists('../midi'):
-        os.makedirs('../midi/')
+    if not os.path.exists('./midi'):
+        os.makedirs('./midi/')
 
     for f in tqdm(file_list):
         try:
-            midi_data = pretty_midi.PrettyMIDI(f)
+            midi_data = pretty_midi.PrettyMIDI('./raw_midi/' + f)
             extracted_melody = pretty_midi.PrettyMIDI()
 
             generated_melody = pretty_midi.Instrument(program=1) # Acoustic Grand Piano
@@ -146,12 +146,12 @@ def auto_extract():
                 
             extracted_melody.instruments.append(generated_melody)
             extracted_melody.instruments.append(generated_durm)
-            extracted_melody.write('../midi/' + 'extract_' + f  + '.mid')
+            extracted_melody.write('./midi/' + 'extract_' + f  + '.mid')
         except Exception as e:
             print(e)
             print(f + 'has error!')
-            if os.path.exists('../midi/' + f + '_extract' + '.mid'):
-                os.remove('../midi/' + f + '_extract' + '.mid')
+            if os.path.exists('./midi/' + f + '_extract' + '.mid'):
+                os.remove('./midi/' + f + '_extract' + '.mid')
 
 
 if __name__ == '__main__':
