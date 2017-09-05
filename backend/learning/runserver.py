@@ -1,6 +1,8 @@
 import model
 import pretty_midi
 import numpy as np
+import socket
+import time
 
 separate_power = model.time_num
 
@@ -39,7 +41,7 @@ def concat_repeat(midi_data_name, arr):
                     one_index -= 2**k
 
     midi_data.instruments.append(generated_drum)
-    midi_data.write(midi_data_name + '_added.mid')
+    midi_data.write('test2.mid')
 
 
 def separate(file_name):
@@ -250,17 +252,34 @@ def cutting(pred):
             next_bar = current_bar
 
 if __name__ == '__main__':
-    # download MIDI file from client using socket. 
-    # save MIDI file with name as 'test.mid'
 
-    midi_data_name = 'test.mid'
+    server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_sock.bind( ('127.0.0.1', 9001))
+    server_sock.listen(10)
 
-    arr, bar_num = separate(midi_data_name)
+    while True:
 
-    pred = model.predict(arr)
-    cutting(pred)
-    concat_repeat(midi_data_name, pred)
+        client_sock, addr = server_sock.accept()
+        data = client_sock.recv(200000)
+        # print(data)
+        f = open("test.mid",'wb');
+        f.write(data);
+        f.close();
 
-    # send 'test.mid' to client
-    # os.remove(midi_data_name)
+        midi_data_name = 'test.mid'
+        arr, bar_num = separate(midi_data_name)
+        pred = model.predict(arr)
+        cutting(pred)
+        concat_repeat(midi_data_name, pred)
+
+        f2 = open("./test2.mid", 'rb')
+        print("Sending...")
+        data2 = f2.read(200000)
+        print(data2)
+        client_sock.send(data2)
+        f2.close();
+
+    
+        # send 'test.mid' to client
+        # os.remove(midi_data_name)
     
