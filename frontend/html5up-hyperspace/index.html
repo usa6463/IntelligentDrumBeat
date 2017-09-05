@@ -173,9 +173,8 @@
 											*/
         									
         									//var fs = require('fs');
-
 								            e.preventDefault();
-								            //주의사항 파일 전체경로를 알수없어 바로 해당폴더에서 파일을 불러온다.
+								            
 											var file = e.dataTransfer.files[0].name,
 											reader = new FileReader();
 											reader.onload = function (event) {
@@ -187,17 +186,20 @@
 											var net = require('net');
 											var fs = require('fs');
 											
-											
+											net.bufferSize = 200000;
+											net.bytesRead = 200000;
 											var PORT = 9001;
 											var HOST = '127.0.0.1';
 											var FILEPATH = './'+ file;
 											console.log(FILEPATH);
 											var client = new net.Socket()
-											
+											client.bufferSize = 200000;
+											client.bytesRead = 200000;
 											//connect to the server
 											client.connect(PORT,HOST,function() {
 											    'Client Connected to server'
-											
+												
+
 											    //send a file to the server
 											    var fileStream = fs.createReadStream(FILEPATH);
 											    fileStream.on('error', function(err){
@@ -209,7 +211,40 @@
 											    });
 											
 											});
+											client.on('data', function(data){ 
+												console.log('recv:' + data);
+												/* 
+												fs.open('F:/work/recv/receive.mid','wb', (err, fd) => {
+												  if (err) {
+												    if (err.code === 'EEXIST') {
+												      console.error('myfile already exists');
+												      return;
+												    }
+												
+												    throw err;
+												  }
+												
+												  //writeMyData(fd);
+												});
+												*/
+												fs.writeFile('./receive.mid', data, 'binary', function(error){
+													console.log('write end')
+												})
+											});
+											/*
+											const options = {
+											  allowHalfOpen: false,
+											  pauseOnConnect: false,
+											};
 											
+											const server = net.createServer(option, function(listener){
+												client.on('data', (data) =>{
+													fs.writeFile('./receive-file/receive.mid', data, function(err){
+														if(err) console.log("writing error");
+													} )
+												})
+											})
+											*/
 											//handle closed
 											client.on('close', function() {
 											    console.log('server closed connection')
@@ -218,6 +253,7 @@
 											client.on('error', function(err) {
 											    console.log(err);
 											});
+
 
 
 											return false;

@@ -7,13 +7,22 @@ server_sock.listen(10)
 
 client_sock, addr = server_sock.accept()
 
-data = client_sock.recv(65535)
+data = client_sock.recv(200000)
 print(data)
 f = open("save_test.mid",'wb');
 f.write(data);
 f.close();
 
-time.sleep(40)
+time.sleep(20)
+
+
 f2 = open("./Complete/complete.mid", 'rb')
-data2 = f2.read()
+print("Sending...")
+data2 = f2.read(200000)
 print(data2)
+
+
+client_sock.send(data2)
+
+f2.close();
+
