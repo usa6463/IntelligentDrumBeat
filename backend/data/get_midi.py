@@ -5,9 +5,10 @@ from tqdm import tqdm
 
 mid_regex = r'a href=".*[.]mid"'
 
-web_root = ['http://bhs.minor9.com/midi/assortment/A-F/',
-    'http://bhs.minor9.com/midi/assortment/G-Q/',
-    'http://bhs.minor9.com/midi/assortment/R-Z/']
+# web_root = ['http://bhs.minor9.com/midi/assortment/A-F/',
+#     'http://bhs.minor9.com/midi/assortment/G-Q/',
+#     'http://bhs.minor9.com/midi/assortment/R-Z/']
+web_root = ['http://bhs.minor9.com/midi/jazzstandards/']
 
 for url in web_root:
     html = urllib2.urlopen(url)

@@ -143,7 +143,7 @@ def auto_extract():
                 
             extracted_melody.instruments.append(generated_melody)
             extracted_melody.instruments.append(generated_durm)
-            extracted_melody.write('../midi/' + f + '_extract' + '.mid')
+            extracted_melody.write('../midi/' + 'extract_' + f  + '.mid')
         except Exception as e:
             print(e)
             print f + 'has error!'
