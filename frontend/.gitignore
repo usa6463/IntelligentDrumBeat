@@ -42,3 +42,4 @@ node_modules/
 /vendor/npm/
 /vendor/python_26/
 .gclient_done
+package-lock.json
