@@ -9,27 +9,17 @@
 		<title>Midi input</title>
 		<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/github-eed3ef46d6f155c516e37edc17b0ed05f0d5035ec63b37cfd3c408bf17f06477.css"/>
-		<!--
-		<link rel="stylesheet" href="frameworks-7db951ed87f8f6cbd3a9e89c294e300cf23c1a83ad7ae64c70b8f99b21031340.css" />
-		-->
-		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 		<meta name="keywords" content="HTML5 Piano, html piano, css3 piano, html css3 piano, web piano, free web piano, free piano, javascript piano, audio tag, html audio, jquery piano">
-	  
-  		<!--<link rel="stylesheet" type="text/css" href="./HTML5 Piano - FULL 88 keys_files/main.css">-->
-  
+	
   		<script type="text/javascript" async="" src="./HTML5 Piano - FULL 88 keys_files/ga.js.다운로드"></script>
   		<script src="./HTML5 Piano - FULL 88 keys_files/jsapi" type="text/javascript"></script>
- 		<!--<script type="text/javascript">google.load("jquery", "1.5.0");
-		</script>-->
 		<script src="./HTML5 Piano - FULL 88 keys_files/jquery.min.js.다운로드" type="text/javascript"></script>
   		<script src="./HTML5 Piano - FULL 88 keys_files/jquery.hotkeys.js.다운로드"></script>
   		<script src="./HTML5 Piano - FULL 88 keys_files/keyObjects.js.다운로드"></script>
   		<script src="./HTML5 Piano - FULL 88 keys_files/main.js.다운로드"></script>
-  		<!--<script data-main="../main" src="require.js"></script>-->
+
 	</head>
 	<body >
 
@@ -58,70 +48,13 @@
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
 
 						<form accept-charset="UTF-8" action="/upload/upload-manifest-files" method="post">
-							<!--<div style="margin:0;padding:0;display:inline">-->
-							<!--
-							<input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="1CeiNbZ8MqcobSmF/mjQlyqHFvhsI/KegVp0vSIv+xf5Vvktzy1gCuHyllncN59SWzNOZ/Jooz0MY+3jvUgTfw=="></div>
-							-->
+
         					<div class="blankslate js-uploadable-container js-upload-manifest-file repo-file-upload-target dragover" 
         					>
-        					<!--
-        					data-upload-policy-url="/upload/policies/upload-manifest-files" data-upload-policy-authenticity-token="WdxuyLCt17Dwh+HkKibfmTcoOTKSeJnxWsOyvbn6fDdEoK9yxwfh0WAAMQylAajsITLltZtXHZf60zO7yURrCA==" data-upload-repository-id="91445860" data-directory-upload-max-files="100" data-directory-upload="">
-        					-->
-        					<!--
-        						<style>
-        							#repo-file-upload{
-        								width: 700px;
-        								height: 400px;
-        							}
-        						</style>
-        						-->
 
-        						<!--<div id="drop2" droppable="foo,bar" class="repo-file-upload-outline" multi>-->
-         						<!--
-         						<div id="drop2" droppable="foo,bar" multi class="repo-file-upload-outline" multi>
-   								-->      						
+         						<div id="box2" class="repo-file-upload-outline"></div>
 
-
-         						
-         						<div id="box2" class="repo-file-upload-outline">
-         						<!--
-         							  <div id="drag" draggable="true">Draggable Item</div>
-									  <div id="drop" droppable="foobar" multi >Droppable Area</div>
-									 
-									  <script>
-									    const {drag, droppable, addon} = require('electron-drag-drop');
-									 
-									    // drag 
-									    let dragEL = document.getElementById('drag');
-									 
-									    dragEL.addEventListener('dragstart', event => {
-									      drag.start(event.dataTransfer, {
-									        effect: 'copy',
-									        type: 'foobar',
-									        items: 'Hello World!',
-									      });
-									    });
-									    dragEL.addEventListener('dragend', event => {
-									      drag.end();
-									    });
-									 
-									    // drop 
-									    let dropEL = document.getElementById('drop');
-									 
-									    addon(dropEL, droppable);
-									    dropEL._initDroppable(dropEL);
-									    dropEL.addEventListener('drop-area-move', event => {
-									      drag.updateDropEffect(event.detail.dataTransfer, 'copy');
-									    });
-									  </script>-->
-         						</div>
-         						<!--	
-         						<script src="http://localhost:80/socket.io/socket.io.js"></script>
-								-->
-
-
-
-         						<script >
+								<script >
          							
 						    		(function () {
         								var holder = document.getElementById('box2');
@@ -135,44 +68,7 @@
         								    return false;
         								};
         								holder.ondrop = (e) => {
-        									/*
-        									var net = require('net');
-											var fs = require('fs');
-											
-											
-											var PORT = 9001;
-											var HOST = '127.0.0.1';
-											var FILEPATH = '/home/steve/Work/Node.js/FileTransfer/random.fil';
-											
-											var client = new net.Socket()
-											
-											//connect to the server
-											client.connect(PORT,HOST,function() {
-											    'Client Connected to server'
-											
-											    //send a file to the server
-											    var fileStream = fs.createReadStream(FILEPATH);
-											    fileStream.on('error', function(err){
-											        console.log(err);
-											    })
-											
-											    fileStream.on('open',function() {
-											        fileStream.pipe(client);
-											    });
-											
-											});
-											
-											//handle closed
-											client.on('close', function() {
-											    console.log('server closed connection')
-											});
-											
-											client.on('error', function(err) {
-											    console.log(err);
-											});
-											*/
-        									
-        									//var fs = require('fs');
+        								
 								            e.preventDefault();
 								            
 											var file = e.dataTransfer.files[0].name,
@@ -181,7 +77,7 @@
 											  console.log(event.target);
 											};
 											console.log(file);
-											//reader.readAsDataURL(file);
+
 
 											var net = require('net');
 											var fs = require('fs');
@@ -214,38 +110,12 @@
 											});
 											client.on('data', function(data){ 
 												console.log('recv:' + data);
-												/* 
-												fs.open('F:/work/recv/receive.mid','wb', (err, fd) => {
-												  if (err) {
-												    if (err.code === 'EEXIST') {
-												      console.error('myfile already exists');
-												      return;
-												    }
-												
-												    throw err;
-												  }
-												
-												  //writeMyData(fd);
-												});
-												*/
+
 												fs.writeFile(FILEPATH+'receive.mid', data, 'binary', function(error){
 													console.log('write end')
 												})
 											});
-											/*
-											const options = {
-											  allowHalfOpen: false,
-											  pauseOnConnect: false,
-											};
-											
-											const server = net.createServer(option, function(listener){
-												client.on('data', (data) =>{
-													fs.writeFile('./receive-file/receive.mid', data, function(err){
-														if(err) console.log("writing error");
-													} )
-												})
-											})
-											*/
+
 											//handle closed
 											client.on('close', function() {
 											    console.log('server closed connection')
@@ -261,174 +131,21 @@
 											
 
 
-								            /*
-								            console.log(e.dataTransfer.files.path);
-											for (var i = 0; i < e.dataTransfer.files.length; ++i) {
-												console.log(e.dataTransfer.files[i].path);
-											}
-											return false;
-											*/
-								            /*
-								            //e.dataTransfer.setData("data", e.target.id);
-								            var data = e.dataTransfer.items;
-								            //var files = e.dataTransfer.files;
-								            console.log(data);
-
-											var net = require('net');
-											
-											var HOST = '127.0.0.1';
-											var PORT = 6969;
-											
-											var client = new net.Socket();
-											client.connect(PORT, HOST, function() {
-											
-											    console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-											    // Write a message to the socket as soon as the client is connected, the server will receive it as message from the client 
-											    client.write(data);
-											
-											});
-											
-											// Add a 'data' event handler for the client socket
-											// data is what the server sent to this socket
-											client.on('data', function(data) {
-											    
-											    console.log('DATA: ' + data);
-											    // Close the client socket completely
-											    client.destroy();
-											   
-											});
-											
-											// Add a 'close' event handler for the client socket
-											client.on('close', function() {
-											    console.log('Connection closed');
-											});
-
-         									
-								            
-								            return false;
-								            */
 								        };
 								    })();
 								</script>
-								<!--backup
-								         						<script >
 
-						    		(function () {
-        								var holder = document.getElementById('box2');
-        								holder.ondragover = () => {
-        								    return false;
-        								};
-        								holder.ondragleave = () => {
-        								    return false;
-        								};
-        								holder.ondragend = () => {
-        								    return false;
-        								};
-        								holder.ondrop = (e) => {
-								            e.preventDefault();
-								            
-								            var files = e.dataTransfer.files;
-								            console.log(files);
-								            
-								            var socket = io.connect('http://localhost:80');  //localhost로 연결합니다.
-								            socket.emit('data', files);
-         									socket.on('news', function (data) {  // 서버에서 news 이벤트가 일어날 때 데이터를 받습니다.
-         									console.log(data);
-         									socket.emit('my other event', { my: 'data' });   //서버에 my other event 이벤트를 보냅니다.
-         									});
-								            
-								            return false;
-								        };
-								    })();
-								</script>
-								-->
          							<div class="inner">
 										<center>
 											<h1>Input midi file</h1>
-											<!--
-											<p>Just another fine responsive site template designed by <a href="http://html5up.net">HTML5 UP</a><br />
-											and released for free under the <a href="http://html5up.net/license">Creative Commons</a>.</p>
-											-->
-											<!--
-											<ul class="actions">
-												<li><a href="#one" class="button scrolly">Learn more</a></li>
-											</ul>
-											-->
 										</center>
 									</div>
 									
 									
           							<img alt="Feature image" draggable="false" height="180" src="https://assets-cdn.github.com/images/files-lg.svg" width="204">
-          							<!--
-          							<h2 class="repo-file-upload-text initial-text">Drag files here to add them to your repository</h2>
-          							<h2 class="repo-file-upload-text alternate-text">Drag additional files here to add them to your repository</h2>
-          							<h2 class="repo-file-upload-drop-text">Drop to upload your files</h2>
 
-          							
-          							<p class="repo-file-upload-choose">
-          							  <input type="file" multiple="multiple" class="manual-file-chooser js-manual-file-chooser">
-          							  Or <a class="manual-file-chooser-text" href="#">choose your files</a>
-          							</p>
-
-          							<div class="repo-file-upload-errors">
-          							  <span class="error too-big">
-          							    Yowza, that’s a big file. Try again with a file smaller than 25MB.
-          							  </span>
-          							  <span class="error too-many">
-          							    Yowza, that’s a lot of files. Try again with fewer than 100 files.
-          							  </span>
-          							  <span class="error empty">
-          							    This file is empty.
-          							  </span>
-          							  <span class="error hidden-file">
-          							    This file is hidden.
-          							  </span>
-          							  <span class="error failed-request">
-          							    Something went really wrong, and we can’t process that file.
-          							  </span>
-          							</div>
-          							-->
           						</div>
-          						<!--
-       							<script>
-								    'use strict'
-								
-								    const {droppable, addon} = require('electron-drag-drop');
-								
-								    let dropEL = document.getElementById('drop');
-								    addon (dropEL, droppable);
-								    dropEL._initDroppable(dropEL);
-								    require('./renderer.js');
-								</script>
-								-->
-          						<!--
-          						<script>
-									const holder = document.getElementById('drop2')
-									holder.ondragover = () => {
-										return false;
-									}
-									holder.ondragleave = holder.ondragend = () => {
-										return false;
-									}
-									holder.ondrop = (e) => {
-									e.preventDefault()
-									for (let f of e.dataTransfer.files) {
-										console.log('File(s) you dragged here: ', f.path)
-									}
-									return false;
-								}
-								</script>
-								-->
-          						<!--
-          						<script>
-	         						const {droppable, addon} = require('electron-drag-drop');
 
-    								let dropEL = document.getElementById('drop2');
-    								addon (dropEL, droppable);
-    								dropEL._initDroppable(dropEL);
- 
-								</script> 
-								-->
         						</div>
         						
 							</form>
@@ -437,46 +154,13 @@
 
 
 
-				<!-- One -->
-					<!--
-					<section id="intro" class="wrapper style1 fullscreen fade-up">
-					
-					-->
 					<section id="one" class="wrapper style2 spotlights" style="height: 1100px;">
 						
 							<nav class="right">
-							<!--<a id="Octaves" style="float: right;">Octaves</a><br>-->
-							<!--<a id="switchLight" style="float: right;">Switch the light</a>-->
 							</nav>
 							<div id="piano">
 							<div id="pianoBody">
-							<!--<div id="littleRedLine"></div>-->
-							<!--
-							<div id="o00" class="octave">
-								<div id="00A" class="key white"><div class="keyname" style="display: none;">A</div></div>
-								<div id="00B" class="key white"><div class="keyname" style="display: none;">B</div></div>
-								<div class="flats">
-									<div id="00As" class="key black"><div class="keyname" style="display: none;">A# == Bb</div></div>
-								</div>
-							</div>
 
-						<div id="o0" class="octave">
-							<div id="0C" class="key white"><div class="keyname" style="display: none;">C</div><div class="oN">1</div></div>
-							<div id="0D" class="key white"><div class="keyname" style="display: none;">D</div></div>
-							<div id="0E" class="key white"><div class="keyname" style="display: none;">E</div></div>
-							<div id="0F" class="key white"><div class="keyname" style="display: none;">F</div></div>
-							<div id="0G" class="key white"><div class="keyname" style="display: none;">G</div></div>
-							<div id="0A" class="key white"><div class="keyname" style="display: none;">A</div></div>
-							<div id="0B" class="key white"><div class="keyname" style="display: none;">B</div></div>
-							<div class="flats">
-								<div id="0Cs" class="key black"><div class="keyname" style="display: none;">C# == Db</div></div>
-								<div id="0Ds" class="key black"><div class="keyname" style="display: none;">D# == Eb</div></div>
-								<div id="0Fs" class="key black"><div class="keyname" style="display: none;">F# == Gb</div></div>
-								<div id="0Gs" class="key black"><div class="keyname" style="display: none;">G# == Ab</div></div>
-								<div id="0As" class="key black"><div class="keyname" style="display: none;">A# == Bb</div></div>
-							</div>
-						</div>
-						-->
 						<div id="o1" class="octave" style="margin-left: 20px;">
 							<div id="1C" class="key white"><div class="keyname" style="display: none;">C</div><div class="oN">2</div></div>
 							<div id="1D" class="key white"><div class="keyname" style="display: none;">D</div></div>
@@ -937,190 +621,17 @@
 		</audio>
 	</div>
 </a>
-						<!--
-						<section>
-							<a href="#" class="image"><img src="images/pic01.jpg" alt="" data-position="center center" /></a>
-							<div class="content">
-								<div class="inner">
-									<h2>Sed ipsum dolor</h2>
-									<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-									<ul class="actions">
-										<li><a href="#" class="button">Learn more</a></li>
-									</ul>
-								</div>
-							</div>
-						</section>
-						<section>
-							<a href="#" class="image"><img src="images/pic02.jpg" alt="" data-position="top center" /></a>
-							<div class="content">
-								<div class="inner">
-									<h2>Feugiat consequat</h2>
-									<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-									<ul class="actions">
-										<li><a href="#" class="button">Learn more</a></li>
-									</ul>
-								</div>
-							</div>
-						</section>
-						<section>
-							<a href="#" class="image"><img src="images/pic03.jpg" alt="" data-position="25% 25%" /></a>
-							<div class="content">
-								<div class="inner">
-									<h2>Ultricies aliquam</h2>
-									<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
-									<ul class="actions">
-										<li><a href="#" class="button">Learn more</a></li>
-									</ul>
-								</div>
-							</div>
-						</section>
-						-->
+						
 					</section>
 				</div>
 				
 
-					
-				<!-- Two -->
-					<!--
-					<section id="two" class="wrapper style3 fade-up">
-						<div class="inner">
-							<h2>What we do</h2>
-							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
-							<div class="features">
-								<section>
-									<span class="icon major fa-code"></span>
-									<h3>Lorem ipsum amet</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon major fa-lock"></span>
-									<h3>Aliquam sed nullam</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon major fa-cog"></span>
-									<h3>Sed erat ullam corper</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon major fa-desktop"></span>
-									<h3>Veroeros quis lorem</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon major fa-chain"></span>
-									<h3>Urna quis bibendum</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-								<section>
-									<span class="icon major fa-diamond"></span>
-									<h3>Aliquam urna dapibus</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
-								</section>
-							</div>
-							<ul class="actions">
-								<li><a href="#" class="button">Learn more</a></li>
-							</ul>
-						</div>
-					</section>
-					-->
-				<!-- Three -->
-					<!--
-					<section id="three" class="wrapper style1 fade-up">
-						<div class="inner">
-							<h2>Get in touch</h2>
-							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
-							<div class="split style1">
-								<section>
-									<form method="post" action="#">
-										<div class="field half first">
-											<label for="name">Name</label>
-											<input type="text" name="name" id="name" />
-										</div>
-										<div class="field half">
-											<label for="email">Email</label>
-											<input type="text" name="email" id="email" />
-										</div>
-										<div class="field">
-											<label for="message">Message</label>
-											<textarea name="message" id="message" rows="5"></textarea>
-										</div>
-										<ul class="actions">
-											<li><a href="" class="button submit">Send Message</a></li>
-										</ul>
-									</form>
-								</section>
-								<section>
-									<ul class="contact">
-										<li>
-											<h3>Address</h3>
-											<span>12345 Somewhere Road #654<br />
-											Nashville, TN 00000-0000<br />
-											USA</span>
-										</li>
-										<li>
-											<h3>Email</h3>
-											<a href="#">user@untitled.tld</a>
-										</li>
-										<li>
-											<h3>Phone</h3>
-											<span>(000) 000-0000</span>
-										</li>
-										<li>
-											<h3>Social</h3>
-											<ul class="icons">
-												<li><a href="#" class="fa-twitter"><span class="label">Twitter</span></a></li>
-												<li><a href="#" class="fa-facebook"><span class="label">Facebook</span></a></li>
-												<li><a href="#" class="fa-github"><span class="label">GitHub</span></a></li>
-												<li><a href="#" class="fa-instagram"><span class="label">Instagram</span></a></li>
-												<li><a href="#" class="fa-linkedin"><span class="label">LinkedIn</span></a></li>
-											</ul>
-										</li>
-									</ul>
-								</section>
-							</div>
-						</div>
-					</section>
-
-			</div>
-			-->
-		<!-- Footer -->
-			<!--
-			<footer id="footer" class="wrapper style1-alt">
-				<div class="inner">
-					<ul class="menu">
-						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-					</ul>
-				</div>
-			</footer>
-			-->
 		<!-- Scripts -->
 		<script src="assets/js/jquery.min.js"></script>
 		<script src="assets/js/jquery.scrollex.min.js"></script>
 		<script src="assets/js/jquery.scrolly.min.js"></script>
 		<script src="assets/js/skel.min.js"></script>
 		<script src="assets/js/util.js"></script>
-		<!--
-		<script>
-		require('./renderer.js');
-        </script>
-        -->
-		<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-		<!--
-		<script src="assets/js/main.js"></script>
 		
-		<script type="text/javascript">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', 'UA-21333207-1']);
-		_gaq.push(['_trackPageview']);
-
-		(function() {
-		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-
-		</script>
-		-->
 	</body>
 </html>
